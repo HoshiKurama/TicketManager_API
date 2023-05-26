@@ -1,5 +1,7 @@
 package com.github.hoshikurama.ticketmanager.api.database
 
+import com.github.hoshikurama.ticketmanager.api.ticket.Ticket
+
 /**
  * For various reasons, certain AsyncDatabase function return a DBResult object containing various results.
  * In general, this is returned when the plugin expects numerous results to be returned, more than can be displayed

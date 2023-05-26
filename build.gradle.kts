@@ -1,16 +1,12 @@
 plugins {
     kotlin("jvm") version "1.8.21"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    `maven-publish`
     application
     java
 }
 
-application {
-    mainClass.set("com.github.hoshikurama.ticketmanager.api")
-}
-
 group = "com.github.hoshikurama"
-version = "1.0-SNAPSHOT"
+version = "10.0.0-RC"
 
 repositories {
     mavenCentral()
@@ -18,4 +14,27 @@ repositories {
 
 dependencies {
     compileOnly("net.kyori:adventure-api:4.13.1")
+}
+
+tasks {
+    compileKotlin {
+        kotlinOptions.jvmTarget = "17"
+    }
+    compileJava {
+        sourceCompatibility = JavaVersion.VERSION_17.toString()
+        targetCompatibility = JavaVersion.VERSION_17.toString()
+    }
+}
+
+// https://developerlife.com/2021/02/06/publish-kotlin-library-as-gradle-dep/
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "com.github.hoshikurama"
+            artifactId = "ticketmanager-api"
+            version = "10.0.0-RC"
+
+            from(components["java"])
+        }
+    }
 }

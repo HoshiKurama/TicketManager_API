@@ -17,8 +17,6 @@ import com.github.hoshikurama.ticketmanager.api.ticket.Ticket
 
 interface DatabaseWriteCompleteEventAsync {
     val activeCommandSender: CommandSender.Active
-    val ticketAction: Ticket.Action<*,*,*>
+    val ticketAction: Ticket.Action
     val ticketID: Long
 }
-
-//TODO SEND BEFORE TICKET AND AFTER TICKET

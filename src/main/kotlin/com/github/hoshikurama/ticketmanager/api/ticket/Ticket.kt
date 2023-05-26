@@ -1,7 +1,7 @@
 package com.github.hoshikurama.ticketmanager.api.ticket
 
-//TODO THIS IS SUPER FUCKED
-import java.util.UUID
+import java.util.*
+
 /**
  * Tickets are the foundation of TicketManager; they are both immutable and thread-safe.
  * @property id Unique ID the ticket has been assigned
@@ -12,23 +12,18 @@ import java.util.UUID
  * @property creatorStatusUpdate Used internally to indicate if the creator has seen the last change to their ticket.
  * @property actions Chronological list of modifications made to the initial ticket.
  */
-interface Ticket<out GActions, out GActionType, out GCreator, out GAssignment>
-        where GActionType : Ticket.Action.Type,
-              GAssignment : Ticket.Assignment,
-              GActions : Ticket.Action<*,*,*>,
-              GCreator : Ticket.Creator
-{
+interface Ticket {
     val id: Long
-    val creator: GCreator
+    val creator: Creator
     val priority: Priority
     val status: Status
-    val assignedTo: GAssignment
+    val assignedTo: Assignment
     val creatorStatusUpdate: Boolean
-    val actions: List<GActions>
+    val actions: List<Action>
 
     /**
-     * Encapsulates the priority level of a ticket.
-     */
+    * Encapsulates the priority level of a ticket.
+    */
     enum class Priority {
         LOWEST, LOW, NORMAL, HIGH, HIGHEST
     }
@@ -40,7 +35,6 @@ interface Ticket<out GActions, out GActionType, out GCreator, out GAssignment>
         OPEN, CLOSED;
     }
 
-
     /**
      * Represents any action done upon a ticket, including creation. Actions are immutable and thread-safe.
      * @property type contains the action type and any data associated with that particular action type.
@@ -48,71 +42,59 @@ interface Ticket<out GActions, out GActionType, out GCreator, out GAssignment>
      * @property location location where user performed the action on the ticket
      * @property timestamp Epoch time for when the action was performed
      */
-    interface Action<out GActionType, out GCreator, out GCreationLocation>
-            where GCreationLocation : CreationLocation,
-                  GActionType : Action.Type,
-                  GCreator : Creator
-    {
-        val type: GActionType
-        val user: GCreator
-        val location: GCreationLocation
+    interface Action {
+        val type: Type
+        val user: Creator
+        val location: CreationLocation
         val timestamp: Long
 
         /**
          * All actions have a type. Some types carry additional relevant information. All implementors of Type represent
          * all different types of Ticket modifications.
          */
-        interface Type {
-            /**
-             * Ticket assignment action
-             */
-            interface Assign : Type {
-                val assignment: Assignment
-            }
-
-            /**
-             * Ticket comment action
-             */
-            interface Comment : Type {
-                val comment: String
-            }
-
-            /**
-             * Closes a ticket while also leaving a comment.
-             */
-            interface CloseWithComment : Type {
-                val comment: String
-            }
-
-            /**
-             * Opening ticket. Note: the initial message is contained here.
-             */
-            interface Open : Type {
-                val message: String
-            }
-
-            /**
-             * Priority-Change ticket action.
-             */
-            interface SetPriority : Type {
-                val priority: Priority
-            }
-
-            /**
-             * Closing ticket action. Note: This is a pure close.
-             */
-            interface CloseWithoutComment : Type
-
-            /**
-             * Re-open ticket action.
-             */
-            interface Reopen : Type
-
-            /**
-             * Mass-Close ticket action.
-             */
-            interface MassClose : Type
+        sealed interface Type
+        /**
+         * Ticket assignment action
+         */
+        interface Assign : Type {
+            val assignment: Assignment
         }
+        /**
+         * Ticket comment action
+         */
+        interface Comment : Type {
+            val comment: String
+        }
+        /**
+         * Closes a ticket while also leaving a comment.
+         */
+        interface CloseWithComment : Type {
+            val comment: String
+        }
+        /**
+         * Opening ticket. Note: the initial message is contained here.
+         */
+        interface Open : Type {
+            val message: String
+        }
+        /**
+         * Priority-Change ticket action.
+         */
+        interface SetPriority : Type {
+            val priority: Priority
+        }
+        /**
+         * Closing ticket action. Note: This is a pure close.
+         */
+        interface CloseWithoutComment : Type
+        /**
+         * Re-open ticket action.
+         */
+        interface Reopen : Type
+        /**
+         * Mass-Close ticket action.
+         */
+        interface MassClose : Type
     }
 
 
@@ -121,14 +103,11 @@ interface Ticket<out GActions, out GActionType, out GCreator, out GAssignment>
      * - Console
      * - Nobody
      * - Other (Players, Permission Groups, & Phrases)
-     *
-     * Developers should not implement this interface as the behaviour is not overridable.
-     * Please use it to facilitate your decision in how you store ticket assignments.
      */
-    interface Assignment {
-            /**
-             * Represents no assignment.
-             */
+    sealed interface Assignment {
+        /**
+         * Represents no assignment.
+         */
         interface Nobody : Assignment
         /**
          * Represents Console
@@ -150,28 +129,28 @@ interface Ticket<out GActions, out GActionType, out GCreator, out GAssignment>
      * @see FromPlayer
      * @see FromConsole
      */
-    interface CreationLocation {
+    sealed interface CreationLocation {
         val server: String?
 
-       /**
-        * Denotes the creation location of a player ticket. All values are not null except for the following:
-        * @property world world ticket is created in
-        * @property x x-block position
-        * @property y y-block position
-        * @property z z-block position
-        */
-       interface FromPlayer : CreationLocation {
-           val world: String
-           val x: Int
-           val y: Int
-           val z: Int
-       }
+        /**
+         * Denotes the creation location of a player ticket. All values are not null except for the following:
+         * @property world world ticket is created in
+         * @property x x-block position
+         * @property y y-block position
+         * @property z z-block position
+         */
+        interface FromPlayer : CreationLocation {
+            val world: String
+            val x: Int
+            val y: Int
+            val z: Int
+        }
 
-       /**
-        * Denotes the creation location of a console ticket. Values should always be null except for the server
-        * if in proxy mode
-        */
-       interface FromConsole : CreationLocation
+        /**
+         * Denotes the creation location of a console ticket. Values should always be null except for the server
+         * if in proxy mode
+         */
+        interface FromConsole : CreationLocation
     }
 
 
@@ -181,7 +160,7 @@ interface Ticket<out GActions, out GActionType, out GCreator, out GAssignment>
      * @see User
      * @see Console
      */
-    interface Creator {
+    sealed interface Creator {
         /**
          * Normal player on a Ticket/Action
          * @property uuid Player's unique ID on the server/network.
@@ -208,3 +187,31 @@ interface Ticket<out GActions, out GActionType, out GCreator, out GAssignment>
         interface DummyCreator : Creator
     }
 }
+
+
+/**
+ * Function TicketManager internally uses to compare assignments
+ */
+infix fun Ticket.Assignment.equalTo(other: Ticket.Assignment) = when (this) {
+    is Ticket.Assignment.Nobody, is Ticket.Assignment.Console -> this === other
+    is Ticket.Assignment.Other -> other is Ticket.Assignment.Other && this.assignment == other.assignment
+}
+
+/**
+ * Function used to compare ticket creators
+ */
+infix fun Ticket.Creator.equalTo(other: Ticket.Creator) = when (this) {
+    is Ticket.Creator.Console -> other is Ticket.Creator.Console
+    is Ticket.Creator.DummyCreator -> other is Ticket.Creator.DummyCreator
+    is Ticket.Creator.UUIDNoMatch -> other is Ticket.Creator.UUIDNoMatch
+    is Ticket.Creator.User -> other is Ticket.Creator.User && this.uuid == other.uuid
+}
+
+/*
+fun CommandSender.Info.asCreator(): com.github.hoshikurama.ticketmanager.api.ticket.Ticket.Creator = when (this) {
+    is CommandSender.Active.OnlineConsole,
+    is CommandSender.Info.Console ->
+    is CommandSender.Active.OnlinePlayer,
+    is CommandSender.Info.Player ->
+}
+ */

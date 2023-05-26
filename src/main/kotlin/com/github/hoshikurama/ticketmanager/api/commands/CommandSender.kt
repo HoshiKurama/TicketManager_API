@@ -5,14 +5,13 @@ import net.kyori.adventure.text.Component
 import java.util.*
 
 /**
- * Anything in TicketManager that either has or is executing a command.
- *
- * If you wish to use your own implementation, then you MUST have both an Active type and Info type per implemented concept.
- * For example, the default implementation for players is Info.Player and Active.OnlinePlayer.
- *
- * More information about the behaviours for Active and Info types can be found in the respective documentation.
+ * Abstraction for anything in TicketManager that either has or is executing a command.
  */
 sealed interface CommandSender {
+    /**
+     * Converts a command sender into a ticket creator.
+     */
+    fun asCreator(): Ticket.Creator
     /**
      * Holds basic information about a known command origin. This type is internally used to
      * represent a server-agnostic command sender and thus able to be sent across a proxy when converted to its
@@ -20,47 +19,27 @@ sealed interface CommandSender {
      *
      * Instances should contain enough information to rebuild a CommandSender.Active instance on a server.
      */
-    interface Info : CommandSender {
+    sealed interface Info : CommandSender {
         /**
-         * Creates a String representation useful for sending in a message channel.
-         * Please note that the implementations are final.
+         * Converts the Info implementor into a string form which can be sent across message channels.
          */
         fun asInfoString(): String
 
         /**
          * Represents a server-agnostic player command sender via their username and UUID.
          * Complementary Active type is OnlinePlayer
-         * @see CommandSender.Type.Active.OnlinePlayer
+         * @see CommandSender.Active.OnlinePlayer
          */
         interface Player : Info {
             val username: String
             val uuid: UUID
-
-        }
-    }
-}
-
-/*
-sealed interface CommandSender {
-
-    sealed interface Info : CommandSender {
-
-        /**
-         * Represents a server-agnostic player command sender via their username and UUID.
-         * Complementary Active type is OnlinePlayer
-         * @see CommandSender.Active.OnlinePlayer
-         */
-        open class Player(val username: String, val uuid: UUID) : Info {
-            final override fun asInfoString() = "CSI_USER.$username.$uuid"
         }
 
         /**
          * Represents a server-agnostic Console command sender. Complementary Active type is OnlineConsole.
          * @see CommandSender.Active.OnlineConsole
          */
-        open class Console : Info {
-            final override fun asInfoString() = "CSI_CONSOLE"
-        }
+        interface Console : Info
     }
 
 
@@ -104,11 +83,11 @@ sealed interface CommandSender {
         /**
          * Represents a Player with an active internal connection to the server.
          */
-        abstract class OnlinePlayer(username: String, uuid: UUID) : Active, Info.Player(username, uuid)
+        interface OnlinePlayer : Active, Info.Player
 
         /**
          * Represents Console with an active internal connection to the server.
          */
-        abstract class OnlineConsole : Active, Info.Console()
+        interface OnlineConsole : Active, Info.Console
     }
 }

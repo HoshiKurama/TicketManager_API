@@ -16,9 +16,8 @@ import com.github.hoshikurama.ticketmanager.api.ticket.Ticket
 interface TicketModificationAsyncEvent {
     val commandSender: CommandSender.Active
     val ticketCreator: Ticket.Creator
-    val modification: Ticket.Action<*,*,*>
+    val modification: Ticket.Action
     val wasSilent: Boolean
-    fun callEventTM()
 }
 
 // TODO: DO I WANT TicketModificationAsyncEvent<*>
