@@ -14,7 +14,6 @@ repositories {
 
 dependencies {
     compileOnly("net.kyori:adventure-api:4.13.1")
-    implementation(kotlin("stdlib-jdk8"))
 }
 
 tasks {
