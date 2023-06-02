@@ -12,7 +12,13 @@ import java.util.concurrent.CompletableFuture
  *
  * Databases are Extensions and thus must be registered. Please see the wiki platform-specific information.
  */
-interface AsyncDatabase {
+interface AsyncDatabase<
+        GAssignment: Ticket.Assignment,
+        GCreator : Ticket.Creator,
+        GCreationLocation : Ticket.CreationLocation,
+        GAction : Ticket.Action<*,*,*>,
+    >
+{ //TODO MAKE METHODS FOR BUILDING TICKET
 
     // Individual property setters
 
@@ -22,7 +28,7 @@ interface AsyncDatabase {
      * @param assignment Assignment value. Null indicates an assignment of nobody
      * @return CompletableFuture indicating when the task is complete
      */
-    fun setAssignmentAsync(ticketID: Long, assignment: Ticket.Assignment): CompletableFuture<Void>
+    fun setAssignmentAsync(ticketID: Long, assignment: GAssignment): CompletableFuture<Void>
 
     /**
      * Asynchronously set the value indicating if the creator has seen the most recent action.
@@ -57,7 +63,7 @@ interface AsyncDatabase {
      * @param action Action to append
      * @return CompletableFuture indicating when the task is complete
      */
-    fun insertActionAsync(id: Long, action: Ticket.Action): CompletableFuture<Void>
+    fun insertActionAsync(id: Long, action: GAction): CompletableFuture<Void>
 
     /**
      * Asynchronously add an initial ticket to the plugin. Tickets inserted with this function do not have a proper
@@ -65,7 +71,7 @@ interface AsyncDatabase {
      * @param ticket Ticket to append
      * @return Uniquely assigned ticket ID
      */
-    fun insertNewTicketAsync(ticket: Ticket): CompletableFuture<Long>
+    fun insertNewTicketAsync(ticket: Ticket): CompletableFuture<Long> //todo rewrite and return the ticket
 
     // Get Ticket
 
@@ -74,7 +80,7 @@ interface AsyncDatabase {
      * @param id Desired ticket ID
      * @return Ticket if the id is found and null otherwise
      */
-    fun getTicketOrNullAsync(id: Long): CompletableFuture<Ticket?>
+    fun getTicketOrNullAsync(id: Long): CompletableFuture<Ticket<>?>
 
     // Aggregate Operations
 
@@ -101,7 +107,7 @@ interface AsyncDatabase {
      * @return See Result for specific returned information.
      * @see DBResult
      */
-    fun getOpenTicketsAssignedToAsync(page: Int, pageSize: Int, assignment: Ticket.Assignment, unfixedGroupAssignment: List<String>): CompletableFuture<DBResult>
+    fun getOpenTicketsAssignedToAsync(page: Int, pageSize: Int, assignment: GAssignment, unfixedGroupAssignment: List<String>): CompletableFuture<DBResult>
 
     /**
      * Asynchronously retrieve a paginated list of tickets which have an open status and assigned to nobody.
@@ -125,7 +131,7 @@ interface AsyncDatabase {
      * @param ticketLoc Location where Creator made the ticket modification
      * @return CompletableFuture indicating when action is complete.
      */
-    fun massCloseTicketsAsync(lowerBound: Long, upperBound: Long, actor: Ticket.Creator, ticketLoc: Ticket.CreationLocation): CompletableFuture<Void>
+    fun massCloseTicketsAsync(lowerBound: Long, upperBound: Long, actor: GCreator, ticketLoc: GCreationLocation): CompletableFuture<Void>
 
     // Counting
     /**
@@ -165,14 +171,14 @@ interface AsyncDatabase {
      * @param creator creator of the tickets
      * @return list of ticket IDs
      */
-    fun getTicketIDsWithUpdatesForAsync(creator: Ticket.Creator): CompletableFuture<List<Long>>
+    fun getTicketIDsWithUpdatesForAsync(creator: GCreator): CompletableFuture<List<Long>>
 
     /**
      * Asynchronously retrieve all ticket IDs of tickets owned by a particular Creator
      * @param creator Ticket creator
      * @return list of ticket IDs
      */
-    fun getOwnedTicketIDsAsync(creator: Ticket.Creator): CompletableFuture<List<Long>>
+    fun getOwnedTicketIDsAsync(creator: GCreator): CompletableFuture<List<Long>>
 
     /**
      * Asynchronously retrieve all ticket IDs of tickets currently open
@@ -183,7 +189,7 @@ interface AsyncDatabase {
     /**
      * Asynchronously retrieve all ticket IDs of tickets currently open and belonging to a particular creator.
      */
-    fun getOpenTicketIDsForUser(creator: Ticket.Creator): CompletableFuture<List<Long>>
+    fun getOpenTicketIDsForUser(creator: GCreator): CompletableFuture<List<Long>>
 
 
     // Internal Database Functions

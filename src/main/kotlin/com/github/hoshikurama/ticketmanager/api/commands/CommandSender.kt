@@ -7,7 +7,7 @@ import java.util.*
 /**
  * Abstraction for anything in TicketManager that either has or is executing a command.
  */
-sealed interface CommandSender {
+sealed interface CommandSender { //TODO ADD METHOD TO INFO WHICH ALLOWS USERS TO REBIND
     /**
      * Converts a command sender into a ticket creator.
      */

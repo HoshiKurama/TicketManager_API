@@ -12,14 +12,19 @@ import java.util.*
  * @property creatorStatusUpdate Used internally to indicate if the creator has seen the last change to their ticket.
  * @property actions Chronological list of modifications made to the initial ticket.
  */
-interface Ticket {
+interface Ticket<
+        out GCreator : Ticket.Creator,
+        out GAssignment : Ticket.Assignment,
+        out GActionType : Ticket.Action.Type,
+        out GCreatorLocation : Ticket.CreationLocation>
+{
     val id: Long
-    val creator: Creator
+    val creator: GCreator
     val priority: Priority
     val status: Status
-    val assignedTo: Assignment
+    val assignedTo: GAssignment
     val creatorStatusUpdate: Boolean
-    val actions: List<Action>
+    val actions: List<Action<GActionType, GCreator, GCreatorLocation>>
 
     /**
     * Encapsulates the priority level of a ticket.
@@ -42,10 +47,14 @@ interface Ticket {
      * @property location location where user performed the action on the ticket
      * @property timestamp Epoch time for when the action was performed
      */
-    interface Action {
-        val type: Type
-        val user: Creator
-        val location: CreationLocation
+    interface Action<
+            out GType : Action.Type,
+            out GCreator: Creator,
+            out GCreationLocation : CreationLocation>
+    {
+        val type: GType
+        val user: GCreator
+        val location: GCreationLocation
         val timestamp: Long
 
         /**
@@ -53,6 +62,7 @@ interface Ticket {
          * all different types of Ticket modifications.
          */
         sealed interface Type
+
         /**
          * Ticket assignment action
          */
@@ -105,6 +115,12 @@ interface Ticket {
      * - Other (Players, Permission Groups, & Phrases)
      */
     sealed interface Assignment {
+
+        /**
+         * Compares two assignments
+         */
+        infix fun equalTo(other: Assignment): Boolean
+
         /**
          * Represents no assignment.
          */
@@ -162,6 +178,11 @@ interface Ticket {
      */
     sealed interface Creator {
         /**
+         * Compare two creators
+         */
+        infix fun equalTo(other: Creator): Boolean
+
+        /**
          * Normal player on a Ticket/Action
          * @property uuid Player's unique ID on the server/network.
          */
@@ -187,31 +208,3 @@ interface Ticket {
         interface DummyCreator : Creator
     }
 }
-
-
-/**
- * Function TicketManager internally uses to compare assignments
- */
-infix fun Ticket.Assignment.equalTo(other: Ticket.Assignment) = when (this) {
-    is Ticket.Assignment.Nobody, is Ticket.Assignment.Console -> this === other
-    is Ticket.Assignment.Other -> other is Ticket.Assignment.Other && this.assignment == other.assignment
-}
-
-/**
- * Function used to compare ticket creators
- */
-infix fun Ticket.Creator.equalTo(other: Ticket.Creator) = when (this) {
-    is Ticket.Creator.Console -> other is Ticket.Creator.Console
-    is Ticket.Creator.DummyCreator -> other is Ticket.Creator.DummyCreator
-    is Ticket.Creator.UUIDNoMatch -> other is Ticket.Creator.UUIDNoMatch
-    is Ticket.Creator.User -> other is Ticket.Creator.User && this.uuid == other.uuid
-}
-
-/*
-fun CommandSender.Info.asCreator(): com.github.hoshikurama.ticketmanager.api.ticket.Ticket.Creator = when (this) {
-    is CommandSender.Active.OnlineConsole,
-    is CommandSender.Info.Console ->
-    is CommandSender.Active.OnlinePlayer,
-    is CommandSender.Info.Player ->
-}
- */
