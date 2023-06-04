@@ -33,27 +33,27 @@ class ActionInfo(
     /**
      * Closes a ticket while also leaving a comment.
      */
-    inner class CloseWithComment(val comment: String)
+    inner class CloseWithComment(val comment: String): Action
 
     /**
      * Opening ticket. Note: the initial message is contained here.
      */
-    inner class Open(val message: String)
+    inner class Open(val message: String): Action
     /**
      * Priority-Change ticket action.
      */
-    inner class SetPriority(val priority: Ticket.Priority)
+    inner class SetPriority(val priority: Ticket.Priority): Action
     /**
      * Closing ticket action. Note: This is a pure close.
      */
-    inner class CloseWithoutComment
+    inner class CloseWithoutComment: Action
     /**
      * Re-open ticket action.
      */
-    inner class Reopen
+    inner class Reopen: Action
     /**
      * Mass-Close ticket action.
      */
-    inner class MassClose
+    inner class MassClose: Action
 }
 
