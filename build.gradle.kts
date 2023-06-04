@@ -14,6 +14,7 @@ repositories {
 
 dependencies {
     compileOnly("net.kyori:adventure-api:4.13.1")
+    api("com.google.guava:guava:32.0.0-jre")
 }
 
 tasks {

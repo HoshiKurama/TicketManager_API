@@ -1,5 +1,7 @@
 package com.github.hoshikurama.ticketmanager.api.database
 
+import com.github.hoshikurama.ticketmanager.api.ticket.Assignment
+import com.github.hoshikurama.ticketmanager.api.ticket.Creator
 import com.github.hoshikurama.ticketmanager.api.ticket.Ticket
 
 /**
@@ -25,12 +27,12 @@ import com.github.hoshikurama.ticketmanager.api.ticket.Ticket
  */
 
 class SearchConstraints(
-    val creator: Option<Ticket.Creator>? = null,
-    val assigned: Option<Ticket.Assignment>? = null,
+    val creator: Option<Creator>? = null,
+    val assigned: Option<Assignment>? = null,
     val priority: Option<Ticket.Priority>? = null,
     val status: Option<Ticket.Status>? = null,
-    val closedBy: Option<Ticket.Creator>? = null,
-    val lastClosedBy: Option<Ticket.Creator>? = null,
+    val closedBy: Option<Creator>? = null,
+    val lastClosedBy: Option<Creator>? = null,
     val world: Option<String>? = null,
     val creationTime: Option<Long>? = null,
     val keywords: Option<List<String>>? = null,

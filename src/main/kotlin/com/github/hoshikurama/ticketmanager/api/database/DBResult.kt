@@ -1,6 +1,7 @@
 package com.github.hoshikurama.ticketmanager.api.database
 
 import com.github.hoshikurama.ticketmanager.api.ticket.Ticket
+import com.google.common.collect.ImmutableList
 
 /**
  * For various reasons, certain AsyncDatabase function return a DBResult object containing various results.
@@ -13,7 +14,7 @@ import com.github.hoshikurama.ticketmanager.api.ticket.Ticket
  */
 @JvmRecord
 data class DBResult(
-    val filteredResults: List<Ticket>,
+    val filteredResults: ImmutableList<Ticket>,
     val totalPages: Int,
     val totalResults: Int,
     val returnedPage: Int

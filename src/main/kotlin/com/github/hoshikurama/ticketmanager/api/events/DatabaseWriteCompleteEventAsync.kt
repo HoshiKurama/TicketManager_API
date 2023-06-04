@@ -1,7 +1,7 @@
 package com.github.hoshikurama.ticketmanager.api.events
 
 import com.github.hoshikurama.ticketmanager.api.commands.CommandSender
-import com.github.hoshikurama.ticketmanager.api.ticket.Ticket
+import com.github.hoshikurama.ticketmanager.api.ticket.Action
 
 /**
  * Event fires when after all database writes for a particular command are complete (ignoring
@@ -17,6 +17,6 @@ import com.github.hoshikurama.ticketmanager.api.ticket.Ticket
 
 interface DatabaseWriteCompleteEventAsync {
     val activeCommandSender: CommandSender.Active
-    val ticketAction: Ticket.Action
+    val ticketAction: Action
     val ticketID: Long
 }

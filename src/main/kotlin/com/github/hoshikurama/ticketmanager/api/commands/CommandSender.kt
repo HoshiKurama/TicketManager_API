@@ -1,17 +1,18 @@
 package com.github.hoshikurama.ticketmanager.api.commands
 
-import com.github.hoshikurama.ticketmanager.api.ticket.Ticket
+import com.github.hoshikurama.ticketmanager.api.ticket.ActionLocation
+import com.github.hoshikurama.ticketmanager.api.ticket.Creator
 import net.kyori.adventure.text.Component
 import java.util.*
 
 /**
  * Abstraction for anything in TicketManager that either has or is executing a command.
  */
-sealed interface CommandSender { //TODO ADD METHOD TO INFO WHICH ALLOWS USERS TO REBIND
+sealed interface CommandSender {
     /**
      * Converts a command sender into a ticket creator.
      */
-    fun asCreator(): Ticket.Creator
+    fun asCreator(): Creator
     /**
      * Holds basic information about a known command origin. This type is internally used to
      * represent a server-agnostic command sender and thus able to be sent across a proxy when converted to its
@@ -30,16 +31,22 @@ sealed interface CommandSender { //TODO ADD METHOD TO INFO WHICH ALLOWS USERS TO
          * Complementary Active type is OnlinePlayer
          * @see CommandSender.Active.OnlinePlayer
          */
-        interface Player : Info {
-            val username: String
-            val uuid: UUID
+        open class Player(
+            val username: String,
+            val uuid: UUID,
+        ) : Info {
+            final override fun asInfoString() = "CSI_USER.$username.$uuid"
+            final override fun asCreator(): Creator = Creator.User(uuid)
         }
 
         /**
          * Represents a server-agnostic Console command sender. Complementary Active type is OnlineConsole.
          * @see CommandSender.Active.OnlineConsole
          */
-        interface Console : Info
+        open class Console : Info {
+            final override fun asInfoString() = "CSI_CONSOLE"
+            final override fun asCreator(): Creator = Creator.Console
+        }
     }
 
 
@@ -58,7 +65,7 @@ sealed interface CommandSender { //TODO ADD METHOD TO INFO WHICH ALLOWS USERS TO
         /**
          * Acquire the location of the player as a TicketCreationLocation.
          */
-        fun getLocAsTicketLoc(): Ticket.CreationLocation
+        fun getLocAsTicketLoc(): ActionLocation
 
         /**
          * Send a chat message to the sender.
@@ -83,11 +90,11 @@ sealed interface CommandSender { //TODO ADD METHOD TO INFO WHICH ALLOWS USERS TO
         /**
          * Represents a Player with an active internal connection to the server.
          */
-        interface OnlinePlayer : Active, Info.Player
+        abstract class OnlinePlayer(username: String, uuid: UUID) : Active, Info.Player(username, uuid)
 
         /**
          * Represents Console with an active internal connection to the server.
          */
-        interface OnlineConsole : Active, Info.Console
+        abstract class OnlineConsole : Active, Info.Console()
     }
 }
