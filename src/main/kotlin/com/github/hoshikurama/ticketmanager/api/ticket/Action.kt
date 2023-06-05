@@ -17,7 +17,7 @@ sealed interface Action
  * @property timestamp Epoch time for when the action was performed
  */
 class ActionInfo(
-     val user: Assignment,
+     val user: Creator,
      val location: ActionLocation,
      val timestamp: Long = Instant.now().epochSecond,
 ) {
