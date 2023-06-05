@@ -102,7 +102,7 @@ interface AsyncDatabase {
      * @return See Result for specific returned information.
      * @see DBResult
      */
-    fun getOpenTicketsAssignedToAsync(page: Int, pageSize: Int, assignment: Assignment, unfixedGroupAssignment: List<String>): CompletableFuture<DBResult>
+    fun getOpenTicketsAssignedToAsync(page: Int, pageSize: Int, assignments: List<Assignment>): CompletableFuture<DBResult>
 
     /**
      * Asynchronously retrieve a paginated list of tickets which have an open status and assigned to nobody.
@@ -140,7 +140,7 @@ interface AsyncDatabase {
      * @param unfixedGroupAssignment Desired assignment for any group names. Useful for when searching for tickets
      * assigned to a user via directly or by their permission group.
      */
-    fun countOpenTicketsAssignedToAsync(assignment: String, unfixedGroupAssignment: List<String>): CompletableFuture<Long>
+    fun countOpenTicketsAssignedToAsync(assignments: List<Assignment>): CompletableFuture<Long>
 
     // Searching
     /**
