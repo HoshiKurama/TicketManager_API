@@ -1,10 +1,10 @@
 package com.github.hoshikurama.ticketmanager.api.commands
 
 import com.github.hoshikurama.ticketmanager.api.ticket.ActionLocation
+import com.github.hoshikurama.ticketmanager.api.ticket.Assignment
 import com.github.hoshikurama.ticketmanager.api.ticket.Creator
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import net.luckperms.api.LuckPermsProvider
 import java.util.*
 
@@ -12,10 +12,18 @@ import java.util.*
  * Abstraction for anything in TicketManager that either has or is executing a command.
  */
 sealed interface CommandSender {
+
     /**
      * Converts a command sender into a ticket creator.
      */
     fun asCreator(): Creator
+
+    /**
+     * Converts a command sender into a ticket assignment
+     */
+    fun asAssignment(): Assignment
+
+
     /**
      * Holds basic information about a known command origin. This type is internally used to
      * represent a server-agnostic command sender and thus able to be sent across a proxy when converted to its
@@ -40,6 +48,7 @@ sealed interface CommandSender {
         ) : Info {
             final override fun asInfoString() = "CSI_USER.$username.$uuid"
             final override fun asCreator(): Creator = Creator.User(uuid)
+            final override fun asAssignment(): Assignment = Assignment.Player(username)
         }
 
         /**
@@ -49,6 +58,7 @@ sealed interface CommandSender {
         open class Console : Info {
             final override fun asInfoString() = "CSI_CONSOLE"
             final override fun asCreator(): Creator = Creator.Console
+            final override fun asAssignment(): Assignment = Assignment.Console
         }
     }
 
