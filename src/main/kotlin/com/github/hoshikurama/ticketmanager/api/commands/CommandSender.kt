@@ -85,6 +85,7 @@ sealed interface CommandSender {
          * @param msg Message which is first parsed as a Kyori MiniMessage.
          *
          */
+        @Suppress("Unused")
         fun sendMessage(msg: String) = sendMessage(MiniMessage.miniMessage().deserialize(msg))
 
         /**
@@ -111,6 +112,7 @@ sealed interface CommandSender {
                 .get()
                 .userManager
                 .getUser(uuid)!!
+            @Suppress("Unused")
             val permissionGroups: List<String> = lpUser
                 .getInheritedGroups(lpUser.queryOptions)
                 .map { it.name }

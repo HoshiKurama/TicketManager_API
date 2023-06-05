@@ -25,7 +25,7 @@ import com.github.hoshikurama.ticketmanager.api.ticket.Ticket
  * @property keywords search by tickets with a particular keyword in any of its comments or in its opening statement.
  * @property requestedPage Page requested by user. Default to closest value if request falls outside of possible range.
  */
-
+@Suppress("MemberVisibilityCanBePrivate")
 class SearchConstraints(
     val creator: Option<Creator>? = null,
     val assigned: Option<Assignment>? = null,
@@ -43,6 +43,7 @@ class SearchConstraints(
      * limited to only two. As the name implies, these are the symbols a user may enter and represent
      * all possible relational types.
      */
+    @Suppress("Unused")
     enum class Symbol {
         EQUALS, NOT_EQUALS, LESS_THAN, GREATER_THAN
     }
@@ -58,4 +59,5 @@ class SearchConstraints(
  * and syntax for handling nullability, and so this custom object works much better.)
  * @see SearchConstraints
  */
+@Suppress("Unused")
 class Option<T>(val symbol: SearchConstraints.Symbol, val value: T)

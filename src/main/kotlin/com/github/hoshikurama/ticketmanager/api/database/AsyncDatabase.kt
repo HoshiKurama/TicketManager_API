@@ -23,6 +23,7 @@ interface AsyncDatabase {
      * @param assignment Assignment value. Null indicates an assignment of nobody
      * @return CompletableFuture indicating when the task is complete
      */
+    @Suppress("Unused")
     fun setAssignmentAsync(ticketID: Long, assignment: Assignment): CompletableFuture<Void>
 
     /**
@@ -32,6 +33,7 @@ interface AsyncDatabase {
      * @param status true indicates the user has an update to read. False indicates otherwise.
      * @return CompletableFuture indicating when the task is complete
      */
+    @Suppress("Unused")
     fun setCreatorStatusUpdateAsync(ticketID: Long, status: Boolean): CompletableFuture<Void>
 
     /**
@@ -40,6 +42,7 @@ interface AsyncDatabase {
      * @param priority Priority of ticket
      * @return CompletableFuture indicating when the task is complete
      */
+    @Suppress("Unused")
     fun setPriorityAsync(ticketID: Long, priority: Ticket.Priority): CompletableFuture<Void>
 
     /**
@@ -48,6 +51,7 @@ interface AsyncDatabase {
      * @param status Ticket Status (Open/Closed)
      * @return CompletableFuture indicating when the task is complete
      */
+    @Suppress("Unused")
     fun setStatusAsync(ticketID: Long, status: Ticket.Status): CompletableFuture<Void>
 
     // Database Additions
@@ -58,6 +62,7 @@ interface AsyncDatabase {
      * @param action Action to append
      * @return CompletableFuture indicating when the task is complete
      */
+    @Suppress("Unused")
     fun insertActionAsync(id: Long, action: Action): CompletableFuture<Void>
 
     /**
@@ -66,6 +71,7 @@ interface AsyncDatabase {
      * @param ticket Ticket to append
      * @return Uniquely assigned ticket ID
      */
+    @Suppress("Unused")
     fun insertNewTicketAsync(ticket: Ticket): CompletableFuture<Long>
 
     // Get Ticket
@@ -75,6 +81,7 @@ interface AsyncDatabase {
      * @param id Desired ticket ID
      * @return Ticket if the id is found and null otherwise
      */
+    @Suppress("Unused")
     fun getTicketOrNullAsync(id: Long): CompletableFuture<Ticket?>
 
     // Aggregate Operations
@@ -87,6 +94,7 @@ interface AsyncDatabase {
      * @return See Result for specific returned information.
      * @see DBResult
      */
+    @Suppress("Unused")
     fun getOpenTicketsAsync(page: Int, pageSize: Int): CompletableFuture<DBResult>
 
     /**
@@ -96,12 +104,11 @@ interface AsyncDatabase {
      * If the page size is 0, then the results will not be paginated.
      * @param page Requested page of pagination
      * @param pageSize Number of entries per page
-     * @param assignment Desired assignment to player or string.
-     * @param unfixedGroupAssignment Desired assignment for any group names. Useful for when searching for tickets
-     * assigned to a user via directly or by their permission group.
+     * @param assignments List of assignments to check
      * @return See Result for specific returned information.
      * @see DBResult
      */
+    @Suppress("Unused")
     fun getOpenTicketsAssignedToAsync(page: Int, pageSize: Int, assignments: List<Assignment>): CompletableFuture<DBResult>
 
     /**
@@ -113,6 +120,7 @@ interface AsyncDatabase {
      * @return See Result for specific returned information.
      * @see DBResult
      */
+    @Suppress("Unused")
     fun getOpenTicketsNotAssignedAsync(page: Int, pageSize: Int): CompletableFuture<DBResult>
 
     /**
@@ -126,20 +134,21 @@ interface AsyncDatabase {
      * @param ticketLoc Location where Creator made the ticket modification
      * @return CompletableFuture indicating when action is complete.
      */
+    @Suppress("Unused")
     fun massCloseTicketsAsync(lowerBound: Long, upperBound: Long, actor: Creator, ticketLoc: ActionLocation): CompletableFuture<Void>
 
     // Counting
     /**
      * Asynchronously acquire the number of currently open tickets.
      */
+    @Suppress("Unused")
     fun countOpenTicketsAsync(): CompletableFuture<Long>
 
     /**
      * Asynchronously acquire the number of open tickets assigned to a particular user or to a set of permission groups
-     * @param assignment Desired assignment to player or string.
-     * @param unfixedGroupAssignment Desired assignment for any group names. Useful for when searching for tickets
-     * assigned to a user via directly or by their permission group.
+     * @param assignments List of assignments to check
      */
+    @Suppress("Unused")
     fun countOpenTicketsAssignedToAsync(assignments: List<Assignment>): CompletableFuture<Long>
 
     // Searching
@@ -151,6 +160,7 @@ interface AsyncDatabase {
      * @see SearchConstraints
      * @see DBResult
      */
+    @Suppress("Unused")
     fun searchDatabaseAsync(constraints: SearchConstraints, pageSize: Int): CompletableFuture<DBResult>
 
     // ID Acquisition
@@ -158,6 +168,7 @@ interface AsyncDatabase {
      * Asynchronously retrieve all ticket IDs for any ticket that the creator has not viewed the most recent update.
      * @return list of ticket IDs
      */
+    @Suppress("Unused")
     fun getTicketIDsWithUpdatesAsync(): CompletableFuture<ImmutableList<Long>>
 
     /**
@@ -165,6 +176,7 @@ interface AsyncDatabase {
      * @param creator creator of the tickets
      * @return list of ticket IDs
      */
+    @Suppress("Unused")
     fun getTicketIDsWithUpdatesForAsync(creator: Creator): CompletableFuture<ImmutableList<Long>>
 
     /**
@@ -172,17 +184,20 @@ interface AsyncDatabase {
      * @param creator Ticket creator
      * @return list of ticket IDs
      */
+    @Suppress("Unused")
     fun getOwnedTicketIDsAsync(creator: Creator): CompletableFuture<ImmutableList<Long>>
 
     /**
      * Asynchronously retrieve all ticket IDs of tickets currently open
      * @return list of ticket IDs
      */
+    @Suppress("Unused")
     fun getOpenTicketIDsAsync(): CompletableFuture<ImmutableList<Long>>
 
     /**
      * Asynchronously retrieve all ticket IDs of tickets currently open and belonging to a particular creator.
      */
+    @Suppress("Unused")
     fun getOpenTicketIDsForUser(creator: Creator): CompletableFuture<ImmutableList<Long>>
 
 
@@ -191,11 +206,13 @@ interface AsyncDatabase {
      * Shuts down the database. This function runs on the Common ForkJoinPool as a blocking call during server shutdown
      * and plugin reloading. Do not let this function complete until the database is fully shut down.
      */
+    @Suppress("Unused")
     fun closeDatabase()
 
     /**
      * Initializes or re-initializes the database. This function runs on the Common ForkJoinPool as a blocking call
      * during server shutdown and plugin reloading. Do not let this function complete until the database is ready for use.
      */
+    @Suppress("Unused")
     fun initializeDatabase()
 }

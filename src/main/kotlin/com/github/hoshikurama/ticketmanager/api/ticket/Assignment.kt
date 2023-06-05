@@ -17,6 +17,7 @@ sealed interface Assignment {
     /**
      * Represents no assignment
      */
+    @Suppress("Unused")
     object Nobody : Assignment {
        override infix fun equalTo(other: Assignment): Boolean = this === other
     }
@@ -38,6 +39,7 @@ sealed interface Assignment {
     /**
      * Represents a permission group
      */
+    @Suppress("Unused")
     class PermissionGroup(val permissionGroup: String) : Assignment {
         override infix fun equalTo(other: Assignment): Boolean = other is PermissionGroup && other.permissionGroup == this.permissionGroup
     }
@@ -45,6 +47,7 @@ sealed interface Assignment {
     /**
      * Represents a phrase
      */
+    @Suppress("Unused")
     class Phrase(val phrase: String) : Assignment {
         override infix fun equalTo(other: Assignment): Boolean = other is Phrase && other.phrase == this.phrase
     }

@@ -10,6 +10,7 @@ import java.util.function.Supplier
  * the latest AsyncDatabase builder function associated with the user's requested database type. Thus, it is
  * advisable to submit a builder function which also contains instructions for acquiring the config values.
  */
+@Suppress("Unused")
 interface DatabaseRegistry {
 
     /**

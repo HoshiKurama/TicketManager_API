@@ -25,6 +25,7 @@ data class Ticket(
     /**
      * Encapsulates the priority level of a ticket.
      */
+    @Suppress("Unused")
     enum class Priority {
         LOWEST, LOW, NORMAL, HIGH, HIGHEST
     }
@@ -32,6 +33,7 @@ data class Ticket(
     /**
      * Encapsulates the status of a ticket, which is either open or closed
      */
+    @Suppress("Unused")
     enum class Status {
         OPEN, CLOSED;
     }
@@ -48,21 +50,3 @@ data class Ticket(
         return Ticket(id, creator, priority, status, assignedTo, creatorStatusUpdate, newList)
     }
 }
-/*
-//TODO UHH WHAT? THIS IS IMPL SPECIFIC FOR DATABASE
-
-enum class TypeAsEnum {
-   ASSIGN, CLOSE, CLOSE_WITH_COMMENT, COMMENT, OPEN, REOPEN, SET_PRIORITY, MASS_CLOSE
-}
-
-fun Ticket.Action.Type.getEnum() = when (this) {
-   is Ticket.Action.Open -> Ticket.Action.TypeAsEnum.OPEN
-   is Ticket.Action.Reopen -> Ticket.Action.TypeAsEnum.REOPEN
-   is Ticket.Action.Assign -> Ticket.Action.TypeAsEnum.ASSIGN
-   is Ticket.Action.Comment -> Ticket.Action.TypeAsEnum.COMMENT
-   is Ticket.Action.MassClose -> Ticket.Action.TypeAsEnum.MASS_CLOSE
-   is Ticket.Action.SetPriority -> Ticket.Action.TypeAsEnum.SET_PRIORITY
-   is Ticket.Action.CloseWithoutComment -> Ticket.Action.TypeAsEnum.CLOSE
-   is Ticket.Action.CloseWithComment -> Ticket.Action.TypeAsEnum.CLOSE_WITH_COMMENT
-}
-*/

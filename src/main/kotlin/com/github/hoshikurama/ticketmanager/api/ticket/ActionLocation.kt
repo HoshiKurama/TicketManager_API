@@ -15,6 +15,7 @@ sealed interface ActionLocation {
      * @property z z-block position
      */
     @JvmRecord
+    @Suppress("Unused")
     data class FromPlayer(
         override val server: String?,
         val world: String,

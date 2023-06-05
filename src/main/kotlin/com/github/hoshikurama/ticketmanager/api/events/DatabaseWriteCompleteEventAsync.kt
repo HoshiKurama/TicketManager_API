@@ -14,7 +14,7 @@ import com.github.hoshikurama.ticketmanager.api.ticket.Action
  * @property ticketAction Data regarding the modification made to the ticket.
  * @property ticketID ID of affected ticket. If the ticket ID is not relevant, then -1 is returned instead.
  */
-
+@Suppress("Unused")
 interface DatabaseWriteCompleteEventAsync {
     val activeCommandSender: CommandSender.Active
     val ticketAction: Action

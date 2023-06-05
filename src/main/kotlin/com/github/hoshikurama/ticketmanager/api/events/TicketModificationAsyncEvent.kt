@@ -14,6 +14,7 @@ import com.github.hoshikurama.ticketmanager.api.ticket.Creator
  *
  * Event fires once the command successfully begins execution.
  */
+@Suppress("Unused")
 interface TicketModificationAsyncEvent {
     val commandSender: CommandSender.Active
     val ticketCreator: Creator

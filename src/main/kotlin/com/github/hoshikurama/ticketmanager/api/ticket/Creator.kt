@@ -30,6 +30,7 @@ sealed interface Creator {
     /**
      * Internal dummy value used when TicketManager is unable to find an accurate User or Console object
      */
+    @Suppress("Unused")
     object UUIDNoMatch : Creator {
         override infix fun equalTo(other: Creator): Boolean = other === this
     }
@@ -39,6 +40,7 @@ sealed interface Creator {
      * applicable. For example, events fired contain the ticket creator, but the mass-close command
      * targets many tickets. Thus, a dummy creator is used.
      */
+    @Suppress("Unused")
     object DummyCreator : Creator {
         override infix fun equalTo(other: Creator): Boolean = other === this
     }
