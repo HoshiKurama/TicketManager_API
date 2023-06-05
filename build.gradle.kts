@@ -15,6 +15,8 @@ repositories {
 dependencies {
     compileOnly("net.kyori:adventure-api:4.13.1")
     compileOnly("net.luckperms:api:5.4")
+    implementation("net.kyori:adventure-api:4.13.1")
+    implementation("net.kyori:adventure-text-minimessage:4.13.1")
     api("com.google.guava:guava:32.0.0-jre")
 }
 
