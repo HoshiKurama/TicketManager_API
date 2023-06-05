@@ -3,6 +3,7 @@ package com.github.hoshikurama.ticketmanager.api.commands
 import com.github.hoshikurama.ticketmanager.api.ticket.ActionLocation
 import com.github.hoshikurama.ticketmanager.api.ticket.Creator
 import net.kyori.adventure.text.Component
+import net.luckperms.api.LuckPermsProvider
 import java.util.*
 
 /**
@@ -90,7 +91,20 @@ sealed interface CommandSender {
         /**
          * Represents a Player with an active internal connection to the server.
          */
-        abstract class OnlinePlayer(username: String, uuid: UUID) : Active, Info.Player(username, uuid)
+        abstract class OnlinePlayer(username: String, uuid: UUID) : Active, Info.Player(username, uuid) {
+            private val lpUser = LuckPermsProvider
+                .get()
+                .userManager
+                .getUser(uuid)!!
+            val permissionGroups: List<String> = lpUser
+                .getInheritedGroups(lpUser.queryOptions)
+                .map { it.name }
+
+            final override fun has(permission: String): Boolean = lpUser.cachedData
+                .permissionData
+                .checkPermission(permission)
+                .asBoolean()
+        }
 
         /**
          * Represents Console with an active internal connection to the server.
