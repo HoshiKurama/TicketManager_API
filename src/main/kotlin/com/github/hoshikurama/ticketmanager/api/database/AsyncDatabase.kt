@@ -158,7 +158,7 @@ interface AsyncDatabase {
      * Asynchronously retrieve all ticket IDs for any ticket that the creator has not viewed the most recent update.
      * @return list of ticket IDs
      */
-    fun getTicketIDsWithUpdatesAsync(): CompletableFuture<List<Long>>
+    fun getTicketIDsWithUpdatesAsync(): CompletableFuture<ImmutableList<Long>>
 
     /**
      * Asynchronously retrieve all ticket IDs where a particular user has not viewed the most recent update.
