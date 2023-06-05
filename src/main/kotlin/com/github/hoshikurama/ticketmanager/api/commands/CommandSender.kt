@@ -3,6 +3,8 @@ package com.github.hoshikurama.ticketmanager.api.commands
 import com.github.hoshikurama.ticketmanager.api.ticket.ActionLocation
 import com.github.hoshikurama.ticketmanager.api.ticket.Creator
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.minimessage.MiniMessage
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import net.luckperms.api.LuckPermsProvider
 import java.util.*
 
@@ -62,7 +64,7 @@ sealed interface CommandSender {
      * complementary Info representation.
      */
     sealed interface Active : Info, CommandSender {
-
+        val serverName: String?
         /**
          * Acquire the location of the player as a TicketCreationLocation.
          */
@@ -73,7 +75,7 @@ sealed interface CommandSender {
          * @param msg Message which is first parsed as a Kyori MiniMessage.
          *
          */
-        fun sendMessage(msg: String)
+        fun sendMessage(msg: String) = sendMessage(MiniMessage.miniMessage().deserialize(msg))
 
         /**
          * Sends a chat message to the sender.
@@ -91,7 +93,10 @@ sealed interface CommandSender {
         /**
          * Represents a Player with an active internal connection to the server.
          */
-        abstract class OnlinePlayer(username: String, uuid: UUID) : Active, Info.Player(username, uuid) {
+        abstract class OnlinePlayer(
+            username: String,
+            uuid: UUID,
+        ) : Active, Info.Player(username, uuid) {
             private val lpUser = LuckPermsProvider
                 .get()
                 .userManager
@@ -109,6 +114,9 @@ sealed interface CommandSender {
         /**
          * Represents Console with an active internal connection to the server.
          */
-        abstract class OnlineConsole : Active, Info.Console()
+        abstract class OnlineConsole(override val serverName: String) : Active, Info.Console() {
+            final override fun getLocAsTicketLoc(): ActionLocation = ActionLocation.FromConsole(serverName)
+            final override fun has(permission: String): Boolean = true
+        }
     }
 }
