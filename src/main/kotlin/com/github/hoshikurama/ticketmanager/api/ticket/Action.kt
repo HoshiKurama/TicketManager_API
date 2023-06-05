@@ -29,7 +29,7 @@ class ActionInfo(
     /**
      * Ticket comment action
      */
-    inner class Comment(comment: String)
+    inner class Comment(comment: String): Action
     /**
      * Closes a ticket while also leaving a comment.
      */
