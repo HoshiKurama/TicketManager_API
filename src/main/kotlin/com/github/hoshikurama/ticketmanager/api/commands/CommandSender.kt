@@ -126,7 +126,7 @@ sealed interface CommandSender {
         /**
          * Represents Console with an active internal connection to the server.
          */
-        abstract class OnlineConsole(override val serverName: String) : Active, Info.Console() {
+        abstract class OnlineConsole : Active, Info.Console() {
             final override fun getLocAsTicketLoc(): ActionLocation = ActionLocation.FromConsole(serverName)
             final override fun has(permission: String): Boolean = true
         }
