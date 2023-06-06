@@ -9,46 +9,41 @@ package com.github.hoshikurama.ticketmanager.api.ticket
  * - Phrase
  */
 sealed interface Assignment {
-    /**
-     * Compares two assignments
-     */
-    infix fun equalTo(other: Assignment): Boolean
 
     /**
      * Represents no assignment
      */
     @Suppress("Unused")
-    object Nobody : Assignment {
-       override infix fun equalTo(other: Assignment): Boolean = this === other
-    }
+    object Nobody : Assignment
 
     /**
      * Represents Console
      */
-    object Console : Assignment {
-        override infix fun equalTo(other: Assignment): Boolean = this === other
-    }
+    object Console : Assignment
 
     /**
      * Represents one player
      */
     class Player(val username: String) : Assignment {
-        override infix fun equalTo(other: Assignment): Boolean = other is Player && other.username == this.username
+        override fun equals(other: Any?): Boolean = other != null && other is Player && other.username == this.username
+        override fun hashCode(): Int = username.hashCode()
     }
 
     /**
      * Represents a permission group
      */
     @Suppress("Unused")
-    class PermissionGroup(val permissionGroup: String) : Assignment {
-        override infix fun equalTo(other: Assignment): Boolean = other is PermissionGroup && other.permissionGroup == this.permissionGroup
+    class PermissionGroup(val permissionGroup: String) : Assignment, Any() {
+        override fun equals(other: Any?): Boolean = other != null && other is PermissionGroup && other.permissionGroup == this.permissionGroup
+        override fun hashCode(): Int = permissionGroup.hashCode()
     }
 
     /**
      * Represents a phrase
      */
     @Suppress("Unused")
-    class Phrase(val phrase: String) : Assignment {
-        override infix fun equalTo(other: Assignment): Boolean = other is Phrase && other.phrase == this.phrase
+    class Phrase(val phrase: String) : Assignment, Any() {
+        override fun equals(other: Any?): Boolean = other != null && other is Phrase && other.phrase == this.phrase
+        override fun hashCode(): Int = phrase.hashCode()
     }
 }

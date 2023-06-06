@@ -7,24 +7,21 @@ import java.util.*
  * ticket action purposes.
  */
 sealed interface Creator {
-    /**
-     * Compare two creators
-     */
-    infix fun equalTo(other: Creator): Boolean
 
     /**
      * Normal player on a Ticket/Action
      * @property uuid Player's unique ID on the server/network.
      */
     class User(val uuid: UUID) : Creator {
-        override infix fun equalTo(other: Creator): Boolean = other is User && this.uuid == other.uuid
+        override fun equals(other: Any?): Boolean = other != null && other is User && this.uuid == other.uuid
+        override fun hashCode(): Int = uuid.hashCode()
     }
 
     /**
      * Console on a Ticket/Action
      */
     object Console : Creator {
-        override infix fun equalTo(other: Creator): Boolean = other === this
+        override fun equals(other: Any?): Boolean = other === this
     }
 
     /**
@@ -32,7 +29,7 @@ sealed interface Creator {
      */
     @Suppress("Unused")
     object UUIDNoMatch : Creator {
-        override infix fun equalTo(other: Creator): Boolean = other === this
+        override fun equals(other: Any?): Boolean = other === this
     }
 
     /**
@@ -42,6 +39,6 @@ sealed interface Creator {
      */
     @Suppress("Unused")
     object DummyCreator : Creator {
-        override infix fun equalTo(other: Creator): Boolean = other === this
+        override fun equals(other: Any?): Boolean = other === this
     }
 }
