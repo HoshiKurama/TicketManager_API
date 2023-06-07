@@ -1,6 +1,6 @@
-package com.github.hoshikurama.ticketmanager.api.database
+package com.github.hoshikurama.ticketmanager.api.common.database
 
-import com.github.hoshikurama.ticketmanager.api.ticket.*
+import com.github.hoshikurama.ticketmanager.api.common.ticket.*
 import com.google.common.collect.ImmutableList
 import java.util.concurrent.CompletableFuture
 

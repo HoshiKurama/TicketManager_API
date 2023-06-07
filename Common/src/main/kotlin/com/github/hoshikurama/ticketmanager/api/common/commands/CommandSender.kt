@@ -1,8 +1,8 @@
-package com.github.hoshikurama.ticketmanager.api.commands
+package com.github.hoshikurama.ticketmanager.api.common.commands
 
-import com.github.hoshikurama.ticketmanager.api.ticket.ActionLocation
-import com.github.hoshikurama.ticketmanager.api.ticket.Assignment
-import com.github.hoshikurama.ticketmanager.api.ticket.Creator
+import com.github.hoshikurama.ticketmanager.api.common.ticket.ActionLocation
+import com.github.hoshikurama.ticketmanager.api.common.ticket.Assignment
+import com.github.hoshikurama.ticketmanager.api.common.ticket.Creator
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.luckperms.api.LuckPermsProvider

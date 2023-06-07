@@ -1,4 +1,4 @@
-package com.github.hoshikurama.ticketmanager.api.ticket
+package com.github.hoshikurama.ticketmanager.api.common.ticket
 
 /**
  * Represents a ticket assignment. Below are the current types:

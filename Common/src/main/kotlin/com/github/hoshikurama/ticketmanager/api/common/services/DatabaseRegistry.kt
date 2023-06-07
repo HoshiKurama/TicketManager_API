@@ -1,6 +1,6 @@
-package com.github.hoshikurama.ticketmanager.api.services
+package com.github.hoshikurama.ticketmanager.api.common.services
 
-import com.github.hoshikurama.ticketmanager.api.database.AsyncDatabase
+import com.github.hoshikurama.ticketmanager.api.common.database.AsyncDatabase
 import java.util.function.Supplier
 
 /**

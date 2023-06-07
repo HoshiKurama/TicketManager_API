@@ -1,4 +1,4 @@
-package com.github.hoshikurama.ticketmanager.api.ticket
+package com.github.hoshikurama.ticketmanager.api.common.ticket
 
 /**
  * Location where an action was performed.

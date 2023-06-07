@@ -1,4 +1,4 @@
-package com.github.hoshikurama.ticketmanager.api.ticket
+package com.github.hoshikurama.ticketmanager.api.common.ticket
 
 import com.google.common.collect.ImmutableList
 
@@ -19,7 +19,7 @@ data class Ticket(
     val status: Status,
     val assignedTo: Assignment,
     val creatorStatusUpdate: Boolean,
-    val actions: ImmutableList<Action> ,
+    val actions: ImmutableList<Action>,
 ) {
 
     /**

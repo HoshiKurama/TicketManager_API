@@ -1,8 +1,8 @@
-package com.github.hoshikurama.ticketmanager.api.database
+package com.github.hoshikurama.ticketmanager.api.common.database
 
-import com.github.hoshikurama.ticketmanager.api.ticket.Assignment
-import com.github.hoshikurama.ticketmanager.api.ticket.Creator
-import com.github.hoshikurama.ticketmanager.api.ticket.Ticket
+import com.github.hoshikurama.ticketmanager.api.common.ticket.Assignment
+import com.github.hoshikurama.ticketmanager.api.common.ticket.Creator
+import com.github.hoshikurama.ticketmanager.api.common.ticket.Ticket
 
 /**
  * Search Constraints are how TicketManager forwards search criteria to database extensions. Each property is encapsulated

@@ -1,4 +1,4 @@
-package com.github.hoshikurama.ticketmanager.api.ticket
+package com.github.hoshikurama.ticketmanager.api.common.ticket
 
 import java.time.Instant
 
@@ -26,9 +26,9 @@ sealed interface Action : ActionContents
  */
 @Suppress("Unused")
 class ActionInfo(
-     override val user: Creator,
-     override val location: ActionLocation,
-     override val timestamp: Long = Instant.now().epochSecond,
+    override val user: Creator,
+    override val location: ActionLocation,
+    override val timestamp: Long = Instant.now().epochSecond,
 ) : ActionContents {
 
     /**

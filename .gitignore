@@ -43,3 +43,4 @@ bin/
 /.idea/
 .idea/kotlinc.xml
 *.xml
+/Paper/src/main/java/
