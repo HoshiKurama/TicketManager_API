@@ -36,9 +36,9 @@ subprojects {
     publishing {
         publications {
             create<MavenPublication>("maven") {
-                groupId = "com.github.hoshikurama"
-                artifactId = "ticketmanager-api"
-                version = "10.0.0-RC"
+                groupId = project.group.toString()
+                artifactId = project.name.toString()
+                version = project.version.toString()
 
                 from(components["java"])
             }
