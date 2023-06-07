@@ -14,7 +14,7 @@ import com.github.hoshikurama.ticketmanager.api.common.ticket.Creator
  *
  */
 @Suppress("Unused")
-interface AbstractAsyncTicketModifyEvent {
+interface AbstractAsyncTicketModifyEvent : TMEvent {
     val commandSender: CommandSender.Active
     val ticketCreator: Creator
     val modification: Action

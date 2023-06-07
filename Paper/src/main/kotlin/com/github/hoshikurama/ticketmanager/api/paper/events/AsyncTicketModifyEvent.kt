@@ -18,7 +18,7 @@ class AsyncTicketModifyEvent(
     override val ticketCreator: Creator,
     override val modification: Action,
     override val wasSilent: Boolean
-) : AbstractAsyncTicketModifyEvent, TMEvent, Event(true) {
+) : AbstractAsyncTicketModifyEvent, Event(true) {
 
     companion object {
         val handlerList = HandlerList()
