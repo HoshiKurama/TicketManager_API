@@ -21,7 +21,6 @@ class AsyncTicketModifyEvent(
 
     companion object {
         val handlerList = HandlerList()
-        fun getHandlerList() = handlerList // Note: Required for event to work
     }
 
     override fun getHandlers(): HandlerList = handlerList
