@@ -2,7 +2,6 @@ package com.github.hoshikurama.ticketmanager.api.paper.events
 
 import com.github.hoshikurama.ticketmanager.api.common.commands.CommandSender
 import com.github.hoshikurama.ticketmanager.api.common.events.AbstractAsyncTicketModifyEvent
-import com.github.hoshikurama.ticketmanager.api.common.events.TMEvent
 import com.github.hoshikurama.ticketmanager.api.common.ticket.Action
 import com.github.hoshikurama.ticketmanager.api.common.ticket.Creator
 import org.bukkit.event.Event
@@ -22,6 +21,7 @@ class AsyncTicketModifyEvent(
 
     companion object {
         val handlerList = HandlerList()
+        fun getHandlerList() = handlerList // Note: Required for event to work
     }
 
     override fun getHandlers(): HandlerList = handlerList

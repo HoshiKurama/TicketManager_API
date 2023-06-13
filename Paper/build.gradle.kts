@@ -1,5 +1,12 @@
 plugins {
     kotlin("jvm") version "1.8.21"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+    application
+    java
+}
+
+application {
+    mainClass.set("com.github.hoshikurama.ticketmanager.api.paper.TicketManagerDatabaseRegister")
 }
 
 repositories {
@@ -14,5 +21,11 @@ dependencies {
 tasks {
     compileKotlin {
         kotlinOptions.jvmTarget = "17"
+    }
+
+    shadowJar {
+        dependencies {
+            include(project(":Common"))
+        }
     }
 }
