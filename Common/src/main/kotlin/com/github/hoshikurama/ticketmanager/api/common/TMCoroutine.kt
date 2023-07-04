@@ -42,12 +42,12 @@ object TMCoroutine {
     }
 
     @Suppress("Unused")
-    internal suspend fun getSupervisedJobCount(): Int {
+    suspend fun getSupervisedJobCount(): Int {
         return supervisedScopeCounterActor.get()
     }
 
     @Suppress("Unused")
-    internal suspend fun cancelTasks(reason: String) {
+    suspend fun cancelTasks(reason: String) {
         supervisedScope.cancel(reason)
         supervisedScope = generateSupervisedScope()
         supervisedScopeCounterActor.reset()
