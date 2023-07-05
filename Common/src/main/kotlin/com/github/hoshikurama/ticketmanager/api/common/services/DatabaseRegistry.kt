@@ -1,5 +1,7 @@
 package com.github.hoshikurama.ticketmanager.api.common.services
 
+import com.github.hoshikurama.ticketmanager.api.common.database.AsyncDBAdapter
+import com.github.hoshikurama.ticketmanager.api.common.database.CompletableFutureAsyncDatabase
 import com.github.hoshikurama.ticketmanager.api.common.database.AsyncDatabase
 import java.util.function.Supplier
 
@@ -14,16 +16,29 @@ import java.util.function.Supplier
 interface DatabaseRegistry {
 
     /**
-     * Registers a database builder. This function is for Kotlin users!
-     * @param databaseName exact name that users must type into the TicketManager SE config file
+     * Registers a database builder. This function is only for Kotlin users wishing to use coroutines!
+     * @param databaseName exact name users must type into the TicketManager SE config file
      * @param builder function to build the database
      */
     fun register(databaseName: String, builder: () -> AsyncDatabase)
 
     /**
-     * Registers a database builder. This function is for Java users!
-     * @param databaseName exact name that users must type into the TicketManager SE config file
+     * Registers a database builder. This function is for Kotlin users not wishing to use coroutines!
+     * @param databaseName exact name users must type into the TicketManager SE config file
      * @param builder function to build the database
      */
-    fun register(databaseName: String, builder: Supplier<AsyncDatabase>)
+    fun register(databaseName: String, builder: () -> CompletableFutureAsyncDatabase) {
+        val converter = { AsyncDBAdapter(builder()) }
+        register(databaseName, converter)
+    }
+
+    /**
+     * Registers a database builder. This function is for non-Kotlin users!
+     * @param databaseName exact name users must type into the TicketManager SE config file
+     * @param builder function to build the database
+     */
+    fun register(databaseName: String, builder: Supplier<CompletableFutureAsyncDatabase>) {
+        val converter = { AsyncDBAdapter(builder.get()) }
+        register(databaseName, converter)
+    }
 }

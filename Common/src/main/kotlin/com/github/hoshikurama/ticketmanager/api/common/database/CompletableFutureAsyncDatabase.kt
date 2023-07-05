@@ -2,7 +2,7 @@ package com.github.hoshikurama.ticketmanager.api.common.database
 
 import com.github.hoshikurama.ticketmanager.api.common.ticket.*
 import com.github.hoshikurama.ticketmanager.api.common.ticket.Ticket
-import kotlinx.coroutines.Deferred
+import java.util.concurrent.CompletableFuture
 
 /**
  * Defines how any database extension must operate with TicketManager.
@@ -13,11 +13,10 @@ import kotlinx.coroutines.Deferred
  *
  * Databases are Extensions and thus must be registered. Please see the wiki platform-specific information.
  *
- * NOTE: This is TicketManager's PRIMARY database type, which relies on suspension functions. Suspension functions
- * are only accessible to Kotlin developers. Any other JVM languages must use CompletableFutureAsyncDatabase
- * @see CompletableFutureAsyncDatabase
+ * NOTE: Kotlin users are encouraged to utilize the coroutine-based version of this interface as it is the primary
+ * version. This version is internally adapted to the suspendable version. All non-Kotlin users must use this interface.
  */
-interface AsyncDatabase {
+interface CompletableFutureAsyncDatabase {
 
     // Individual property setters
 
@@ -25,38 +24,38 @@ interface AsyncDatabase {
      * Asynchronously set the assignment of a Ticket. This should have no other side effects.
      * @param ticketID ID of ticket to modify
      * @param assignment Assignment value. Null indicates an assignment of nobody
-     * @return Deferred indicating when the task is complete
+     * @return CompletableFuture indicating when the task is complete
      */
     @Suppress("Unused")
-    suspend fun setAssignmentAsync(ticketID: Long, assignment: Assignment): Deferred<Unit>
+    fun setAssignmentAsync(ticketID: Long, assignment: Assignment): CompletableFuture<Void>
 
     /**
      * Asynchronously set the value indicating if the creator has seen the most recent action.
      * This should have no other side effects.
      * @param ticketID ID of ticket to modify
      * @param status true indicates the user has an update to read. False indicates otherwise.
-     * @return Deferred indicating when the task is complete
+     * @return CompletableFuture indicating when the task is complete
      */
     @Suppress("Unused")
-    suspend fun setCreatorStatusUpdateAsync(ticketID: Long, status: Boolean): Deferred<Unit>
+    fun setCreatorStatusUpdateAsync(ticketID: Long, status: Boolean): CompletableFuture<Void>
 
     /**
      * Asynchronously change the ticket priority. This should have no other side effects.
      * @param ticketID ID of ticket to modify
      * @param priority Priority of ticket
-     * @return Deferred indicating when the task is complete
+     * @return CompletableFuture indicating when the task is complete
      */
     @Suppress("Unused")
-    suspend fun setPriorityAsync(ticketID: Long, priority: Ticket.Priority): Deferred<Unit>
+    fun setPriorityAsync(ticketID: Long, priority: Ticket.Priority): CompletableFuture<Void>
 
     /**
      * Asynchronously set the OPEN or CLOSED status of a ticket. This should have no other side effects.
      * @param ticketID ID of ticket to modify
      * @param status Ticket Status (Open/Closed)
-     * @return Deferred indicating when the task is complete
+     * @return CompletableFuture indicating when the task is complete
      */
     @Suppress("Unused")
-    suspend fun setStatusAsync(ticketID: Long, status: Ticket.Status): Deferred<Unit>
+    fun setStatusAsync(ticketID: Long, status: Ticket.Status): CompletableFuture<Void>
 
     // Database Additions
 
@@ -64,10 +63,10 @@ interface AsyncDatabase {
      * Asynchronously append a Ticket.Action to a ticket. This should have no other side effects.
      * @param id ID of ticket to modify
      * @param action Action to append
-     * @return Deferred indicating when the task is complete
+     * @return CompletableFuture indicating when the task is complete
      */
     @Suppress("Unused")
-    suspend fun insertActionAsync(id: Long, action: Action): Deferred<Unit>
+    fun insertActionAsync(id: Long, action: Action): CompletableFuture<Void>
 
     /**
      * Asynchronously add an initial ticket to the plugin. Tickets inserted with this function do not have a proper
@@ -76,7 +75,7 @@ interface AsyncDatabase {
      * @return Uniquely assigned ticket ID
      */
     @Suppress("Unused")
-    suspend fun insertNewTicketAsync(ticket: Ticket): Long
+    fun insertNewTicketAsync(ticket: Ticket): CompletableFuture<Long>
 
     // Get Ticket
 
@@ -86,7 +85,7 @@ interface AsyncDatabase {
      * @return Ticket if the id is found and null otherwise
      */
     @Suppress("Unused")
-    suspend fun getTicketOrNullAsync(id: Long): Ticket?
+    fun getTicketOrNullAsync(id: Long): CompletableFuture<Ticket?>
 
     // Aggregate Operations
 
@@ -99,7 +98,7 @@ interface AsyncDatabase {
      * @see DBResult
      */
     @Suppress("Unused")
-    suspend fun getOpenTicketsAsync(page: Int, pageSize: Int): DBResult
+    fun getOpenTicketsAsync(page: Int, pageSize: Int): CompletableFuture<DBResult>
 
     /**
      * Asynchronously retrieve a paginated list of tickets which have an open status and a specific assignment.
@@ -113,7 +112,7 @@ interface AsyncDatabase {
      * @see DBResult
      */
     @Suppress("Unused")
-    suspend fun getOpenTicketsAssignedToAsync(page: Int, pageSize: Int, assignments: List<Assignment>): DBResult
+    fun getOpenTicketsAssignedToAsync(page: Int, pageSize: Int, assignments: List<Assignment>): CompletableFuture<DBResult>
 
     /**
      * Asynchronously retrieve a paginated list of tickets which have an open status and assigned to nobody.
@@ -125,7 +124,7 @@ interface AsyncDatabase {
      * @see DBResult
      */
     @Suppress("Unused")
-    suspend fun getOpenTicketsNotAssignedAsync(page: Int, pageSize: Int): DBResult
+    fun getOpenTicketsNotAssignedAsync(page: Int, pageSize: Int): CompletableFuture<DBResult>
 
     /**
      * Asynchronously close all tickets between a lower and upper bound inclusive. Extensions have the following obligation
@@ -139,21 +138,21 @@ interface AsyncDatabase {
      * @return CompletableFuture indicating when action is complete.
      */
     @Suppress("Unused")
-    suspend fun massCloseTicketsAsync(lowerBound: Long, upperBound: Long, actor: Creator, ticketLoc: ActionLocation): Deferred<Unit>
+    fun massCloseTicketsAsync(lowerBound: Long, upperBound: Long, actor: Creator, ticketLoc: ActionLocation): CompletableFuture<Void>
 
     // Counting
     /**
      * Asynchronously acquire the number of currently open tickets.
      */
     @Suppress("Unused")
-    suspend fun countOpenTicketsAsync(): Long
+    fun countOpenTicketsAsync(): CompletableFuture<Long>
 
     /**
      * Asynchronously acquire the number of open tickets assigned to a particular user or to a set of permission groups
      * @param assignments List of assignments to check
      */
     @Suppress("Unused")
-    suspend fun countOpenTicketsAssignedToAsync(assignments: List<Assignment>): Long
+    fun countOpenTicketsAssignedToAsync(assignments: List<Assignment>): CompletableFuture<Long>
 
     // Searching
     /**
@@ -165,7 +164,7 @@ interface AsyncDatabase {
      * @see DBResult
      */
     @Suppress("Unused")
-    suspend fun searchDatabaseAsync(constraints: SearchConstraints, pageSize: Int): DBResult
+    fun searchDatabaseAsync(constraints: SearchConstraints, pageSize: Int): CompletableFuture<DBResult>
 
     // ID Acquisition
     /**
@@ -173,7 +172,7 @@ interface AsyncDatabase {
      * @return list of ticket IDs
      */
     @Suppress("Unused")
-    suspend fun getTicketIDsWithUpdatesAsync(): List<Long>
+    fun getTicketIDsWithUpdatesAsync(): CompletableFuture<List<Long>>
 
     /**
      * Asynchronously retrieve all ticket IDs where a particular user has not viewed the most recent update.
@@ -181,7 +180,7 @@ interface AsyncDatabase {
      * @return list of ticket IDs
      */
     @Suppress("Unused")
-    suspend fun getTicketIDsWithUpdatesForAsync(creator: Creator): List<Long>
+    fun getTicketIDsWithUpdatesForAsync(creator: Creator): CompletableFuture<List<Long>>
 
     /**
      * Asynchronously retrieve all ticket IDs of tickets owned by a particular Creator
@@ -189,20 +188,20 @@ interface AsyncDatabase {
      * @return list of ticket IDs
      */
     @Suppress("Unused")
-    suspend fun getOwnedTicketIDsAsync(creator: Creator): List<Long>
+    fun getOwnedTicketIDsAsync(creator: Creator): CompletableFuture<List<Long>>
 
     /**
      * Asynchronously retrieve all ticket IDs of tickets currently open
      * @return list of ticket IDs
      */
     @Suppress("Unused")
-    suspend fun getOpenTicketIDsAsync(): List<Long>
+    fun getOpenTicketIDsAsync(): CompletableFuture<List<Long>>
 
     /**
      * Asynchronously retrieve all ticket IDs of tickets currently open and belonging to a particular creator.
      */
     @Suppress("Unused")
-    suspend fun getOpenTicketIDsForUser(creator: Creator): List<Long>
+    fun getOpenTicketIDsForUser(creator: Creator): CompletableFuture<List<Long>>
 
 
     // Internal Database Functions

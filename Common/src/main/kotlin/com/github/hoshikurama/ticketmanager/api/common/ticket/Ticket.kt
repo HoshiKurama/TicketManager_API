@@ -1,6 +1,8 @@
 package com.github.hoshikurama.ticketmanager.api.common.ticket
 
-import com.google.common.collect.ImmutableList
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
+
 
 /**
  * Tickets are the foundation of TicketManager; they are both immutable and thread-safe.
@@ -39,14 +41,10 @@ data class Ticket(
     }
 
     operator fun plus(actions: List<Action>): Ticket {
-        return Ticket(id, creator, priority, status, assignedTo, creatorStatusUpdate, ImmutableList.copyOf(actions))
+        return Ticket(id, creator, priority, status, assignedTo, creatorStatusUpdate, actions.toImmutableList())
     }
 
     operator fun plus(action: Action): Ticket {
-        val newList = ImmutableList.builder<Action>()
-            .addAll(actions)
-            .add(action)
-            .build()
-        return Ticket(id, creator, priority, status, assignedTo, creatorStatusUpdate, newList)
+        return Ticket(id, creator, priority, status, assignedTo, creatorStatusUpdate, (actions + action).toImmutableList())
     }
 }

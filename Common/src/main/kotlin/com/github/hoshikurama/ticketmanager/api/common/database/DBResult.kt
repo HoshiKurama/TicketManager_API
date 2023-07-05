@@ -1,7 +1,7 @@
 package com.github.hoshikurama.ticketmanager.api.common.database
 
 import com.github.hoshikurama.ticketmanager.api.common.ticket.Ticket
-import com.google.common.collect.ImmutableList
+import kotlinx.collections.immutable.ImmutableList
 
 /**
  * For various reasons, certain AsyncDatabase function return a DBResult object containing various results.
