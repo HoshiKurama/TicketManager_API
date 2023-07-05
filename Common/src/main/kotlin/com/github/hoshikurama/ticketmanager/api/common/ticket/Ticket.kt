@@ -2,6 +2,7 @@ package com.github.hoshikurama.ticketmanager.api.common.ticket
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toPersistentList
 
 
 /**
@@ -45,6 +46,6 @@ data class Ticket(
     }
 
     operator fun plus(action: Action): Ticket {
-        return Ticket(id, creator, priority, status, assignedTo, creatorStatusUpdate, (actions + action).toImmutableList())
+        return Ticket(id, creator, priority, status, assignedTo, creatorStatusUpdate, (actions.toPersistentList() + action).toImmutableList())
     }
 }
