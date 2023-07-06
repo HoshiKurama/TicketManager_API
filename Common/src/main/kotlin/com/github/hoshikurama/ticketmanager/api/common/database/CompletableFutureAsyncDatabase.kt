@@ -3,6 +3,7 @@ package com.github.hoshikurama.ticketmanager.api.common.database
 import com.github.hoshikurama.ticketmanager.api.common.ticket.*
 import com.github.hoshikurama.ticketmanager.api.common.ticket.Ticket
 import java.util.concurrent.CompletableFuture
+import kotlin.jvm.Throws
 
 /**
  * Defines how any database extension must operate with TicketManager.
@@ -27,6 +28,7 @@ interface CompletableFutureAsyncDatabase {
      * @return CompletableFuture indicating when the task is complete
      */
     @Suppress("Unused")
+    @Throws(Exception::class)
     fun setAssignmentAsync(ticketID: Long, assignment: Assignment): CompletableFuture<Void>
 
     /**
@@ -37,6 +39,7 @@ interface CompletableFutureAsyncDatabase {
      * @return CompletableFuture indicating when the task is complete
      */
     @Suppress("Unused")
+    @Throws(Exception::class)
     fun setCreatorStatusUpdateAsync(ticketID: Long, status: Boolean): CompletableFuture<Void>
 
     /**
@@ -46,6 +49,7 @@ interface CompletableFutureAsyncDatabase {
      * @return CompletableFuture indicating when the task is complete
      */
     @Suppress("Unused")
+    @Throws(Exception::class)
     fun setPriorityAsync(ticketID: Long, priority: Ticket.Priority): CompletableFuture<Void>
 
     /**
@@ -55,6 +59,7 @@ interface CompletableFutureAsyncDatabase {
      * @return CompletableFuture indicating when the task is complete
      */
     @Suppress("Unused")
+    @Throws(Exception::class)
     fun setStatusAsync(ticketID: Long, status: Ticket.Status): CompletableFuture<Void>
 
     // Database Additions
@@ -66,6 +71,7 @@ interface CompletableFutureAsyncDatabase {
      * @return CompletableFuture indicating when the task is complete
      */
     @Suppress("Unused")
+    @Throws(Exception::class)
     fun insertActionAsync(id: Long, action: Action): CompletableFuture<Void>
 
     /**
@@ -75,6 +81,7 @@ interface CompletableFutureAsyncDatabase {
      * @return Uniquely assigned ticket ID
      */
     @Suppress("Unused")
+    @Throws(Exception::class)
     fun insertNewTicketAsync(ticket: Ticket): CompletableFuture<Long>
 
     // Get Ticket
@@ -85,6 +92,7 @@ interface CompletableFutureAsyncDatabase {
      * @return Ticket if the id is found and null otherwise
      */
     @Suppress("Unused")
+    @Throws(Exception::class)
     fun getTicketOrNullAsync(id: Long): CompletableFuture<Ticket?>
 
     // Aggregate Operations
@@ -98,6 +106,7 @@ interface CompletableFutureAsyncDatabase {
      * @see DBResult
      */
     @Suppress("Unused")
+    @Throws(Exception::class)
     fun getOpenTicketsAsync(page: Int, pageSize: Int): CompletableFuture<DBResult>
 
     /**
@@ -112,6 +121,7 @@ interface CompletableFutureAsyncDatabase {
      * @see DBResult
      */
     @Suppress("Unused")
+    @Throws(Exception::class)
     fun getOpenTicketsAssignedToAsync(page: Int, pageSize: Int, assignments: List<Assignment>): CompletableFuture<DBResult>
 
     /**
@@ -124,6 +134,7 @@ interface CompletableFutureAsyncDatabase {
      * @see DBResult
      */
     @Suppress("Unused")
+    @Throws(Exception::class)
     fun getOpenTicketsNotAssignedAsync(page: Int, pageSize: Int): CompletableFuture<DBResult>
 
     /**
@@ -138,6 +149,7 @@ interface CompletableFutureAsyncDatabase {
      * @return CompletableFuture indicating when action is complete.
      */
     @Suppress("Unused")
+    @Throws(Exception::class)
     fun massCloseTicketsAsync(lowerBound: Long, upperBound: Long, actor: Creator, ticketLoc: ActionLocation): CompletableFuture<Void>
 
     // Counting
@@ -145,6 +157,7 @@ interface CompletableFutureAsyncDatabase {
      * Asynchronously acquire the number of currently open tickets.
      */
     @Suppress("Unused")
+    @Throws(Exception::class)
     fun countOpenTicketsAsync(): CompletableFuture<Long>
 
     /**
@@ -152,6 +165,7 @@ interface CompletableFutureAsyncDatabase {
      * @param assignments List of assignments to check
      */
     @Suppress("Unused")
+    @Throws(Exception::class)
     fun countOpenTicketsAssignedToAsync(assignments: List<Assignment>): CompletableFuture<Long>
 
     // Searching
@@ -164,6 +178,7 @@ interface CompletableFutureAsyncDatabase {
      * @see DBResult
      */
     @Suppress("Unused")
+    @Throws(Exception::class)
     fun searchDatabaseAsync(constraints: SearchConstraints, pageSize: Int): CompletableFuture<DBResult>
 
     // ID Acquisition
@@ -172,6 +187,7 @@ interface CompletableFutureAsyncDatabase {
      * @return list of ticket IDs
      */
     @Suppress("Unused")
+    @Throws(Exception::class)
     fun getTicketIDsWithUpdatesAsync(): CompletableFuture<List<Long>>
 
     /**
@@ -180,6 +196,7 @@ interface CompletableFutureAsyncDatabase {
      * @return list of ticket IDs
      */
     @Suppress("Unused")
+    @Throws(Exception::class)
     fun getTicketIDsWithUpdatesForAsync(creator: Creator): CompletableFuture<List<Long>>
 
     /**
@@ -188,6 +205,7 @@ interface CompletableFutureAsyncDatabase {
      * @return list of ticket IDs
      */
     @Suppress("Unused")
+    @Throws(Exception::class)
     fun getOwnedTicketIDsAsync(creator: Creator): CompletableFuture<List<Long>>
 
     /**
@@ -195,12 +213,14 @@ interface CompletableFutureAsyncDatabase {
      * @return list of ticket IDs
      */
     @Suppress("Unused")
+    @Throws(Exception::class)
     fun getOpenTicketIDsAsync(): CompletableFuture<List<Long>>
 
     /**
      * Asynchronously retrieve all ticket IDs of tickets currently open and belonging to a particular creator.
      */
     @Suppress("Unused")
+    @Throws(Exception::class)
     fun getOpenTicketIDsForUser(creator: Creator): CompletableFuture<List<Long>>
 
 
@@ -210,6 +230,7 @@ interface CompletableFutureAsyncDatabase {
      * and plugin reloading. Do not let this function complete until the database is fully shut down.
      */
     @Suppress("Unused")
+    @Throws(Exception::class)
     fun closeDatabase()
 
     /**
@@ -217,5 +238,6 @@ interface CompletableFutureAsyncDatabase {
      * during server shutdown and plugin reloading. Do not let this function complete until the database is ready for use.
      */
     @Suppress("Unused")
+    @Throws(Exception::class)
     fun initializeDatabase()
 }
