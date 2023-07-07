@@ -19,17 +19,25 @@ interface DatabaseRegistry {
      * Registers a database builder. This function is only for Kotlin users wishing to use coroutines!
      * @param databaseName exact name users must type into the TicketManager SE config file
      * @param builder function to build the database
+     * @return the closeDatabase function
      */
-    fun register1(databaseName: String, builder: () -> AsyncDatabase)
+    fun register1(
+        databaseName: String,
+        builder: () -> AsyncDatabase
+    ): () -> Unit
 
     /**
      * Registers a database builder. This function is for Kotlin users not wishing to use coroutines!
      * @param databaseName exact name users must type into the TicketManager SE config file
      * @param builder function to build the database
+     * @return the closeDatabase function
      */
-    fun register2(databaseName: String, builder: () -> CompletableFutureAsyncDatabase) {
+    fun register2(
+        databaseName: String,
+        builder: () -> CompletableFutureAsyncDatabase
+    ): () -> Unit {
         val converter = { AsyncDBAdapter(builder()) }
-        register1(databaseName, converter)
+        return register1(databaseName, converter)
     }
 
     /**
@@ -37,8 +45,12 @@ interface DatabaseRegistry {
      * @param databaseName exact name users must type into the TicketManager SE config file
      * @param builder function to build the database
      */
-    fun register3(databaseName: String, builder: Supplier<CompletableFutureAsyncDatabase>) {
+    fun register3(
+        databaseName: String,
+        builder: Supplier<CompletableFutureAsyncDatabase>
+    ): Supplier<Void?> {
         val converter = { AsyncDBAdapter(builder.get()) }
-        register1(databaseName, converter)
+        val f = register1(databaseName, converter)
+        return Supplier { f(); null }
     }
 }
