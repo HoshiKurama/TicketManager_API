@@ -42,6 +42,16 @@ object TMCoroutine {
     }
 
     @Suppress("Unused")
+    fun <T> asyncSupervised(f: suspend CoroutineScope.() -> T): Deferred<T> {
+        return supervisedScope.async {
+            supervisedScopeCounterActor.increment()
+            try { f() }
+            catch (e: Exception) { throw e }
+            finally { supervisedScopeCounterActor.decrement() }
+        }
+    }
+
+    @Suppress("Unused")
     suspend fun getSupervisedJobCount(): Int {
         return supervisedScopeCounterActor.get()
     }
