@@ -16,7 +16,8 @@ class AsyncTicketModifyEvent(
     override val commandSender: CommandSender.Active,
     override val ticketCreator: Creator,
     override val modification: Action,
-    override val wasSilent: Boolean
+    override val ticketNumber: Long,
+    override val wasSilent: Boolean,
 ) : AbstractAsyncTicketModifyEvent, Event(true) {
 
     companion object {
