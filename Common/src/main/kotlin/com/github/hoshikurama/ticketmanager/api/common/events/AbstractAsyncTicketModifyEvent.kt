@@ -17,6 +17,7 @@ import com.github.hoshikurama.ticketmanager.api.common.ticket.Creator
 interface AbstractAsyncTicketModifyEvent : TMEvent {
     val commandSender: CommandSender.Active
     val ticketCreator: Creator
+    val ticketNumber: Long
     val modification: Action
     val wasSilent: Boolean
 }
