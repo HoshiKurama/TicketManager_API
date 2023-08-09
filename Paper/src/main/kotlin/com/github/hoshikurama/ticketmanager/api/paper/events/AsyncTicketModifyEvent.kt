@@ -21,7 +21,7 @@ class AsyncTicketModifyEvent(
 ) : AbstractAsyncTicketModifyEvent, Event(true) {
 
     companion object {
-        val handlerList = HandlerList()
+        private val handlerList = HandlerList()
         @JvmStatic fun getHandlerList() = handlerList
     }
 
