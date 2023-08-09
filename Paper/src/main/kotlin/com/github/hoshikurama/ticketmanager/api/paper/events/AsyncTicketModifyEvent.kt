@@ -22,6 +22,7 @@ class AsyncTicketModifyEvent(
 
     companion object {
         val handlerList = HandlerList()
+        @JvmStatic fun getHandlerList() = handlerList
     }
 
     override fun getHandlers(): HandlerList = handlerList
