@@ -1,4 +1,6 @@
 
 rootProject.name = "TicketManager_API"
-include("Paper")
 include("Common")
+include("TMCoroutine")
+include("Java")
+include("Java")

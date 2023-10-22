@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.9.0"
+    kotlin("jvm") version "1.9.10"
     `maven-publish`
     java
 }
@@ -8,13 +8,11 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-
-}
+dependencies {}
 
 allprojects {
     group = "com.github.hoshikurama"
-    version = "10.0.0-RC"
+    version = "11.0.0"
 }
 
 subprojects {
@@ -37,7 +35,7 @@ subprojects {
         publications {
             create<MavenPublication>("maven") {
                 groupId = project.group.toString()
-                artifactId = project.name.toString()
+                artifactId = project.name
                 version = project.version.toString()
 
                 from(components["java"])
