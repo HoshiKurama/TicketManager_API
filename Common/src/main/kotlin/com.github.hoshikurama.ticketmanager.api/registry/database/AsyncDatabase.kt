@@ -13,10 +13,6 @@ import com.github.hoshikurama.ticketmanager.api.ticket.*
  * #initializeDatabase() and #closeDatabase() functions.
  *
  * Databases are Extensions and thus must be registered. Please see the wiki platform-specific information.
- *
- * NOTE: This is TicketManager's PRIMARY database type, which relies on suspension functions. Suspension functions
- * are only accessible to Kotlin developers. Any other JVM languages must use CompletableFutureAsyncDatabase
- * @see CompletableFutureAsyncDatabase
  */
 interface AsyncDatabase {
 

@@ -30,5 +30,6 @@ class TMRepeatingTaskRegistry : RepeatingTaskRegistry {
         return Accepted
     }
 
+    @Suppress("Unused")
     fun getExtensions(): List<RepeatingTaskExtension> = extensions
 }

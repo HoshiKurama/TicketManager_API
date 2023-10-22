@@ -40,6 +40,7 @@ class TMDatabaseRegistry : DatabaseRegistry {
         return Accepted
     }
 
+    @Suppress("Unused")
     suspend fun loadAndInitialize(tmDirectory: Path, config: Config, locale: Locale): AsyncDatabase {
         return extension.load(tmDirectory, config, locale)
             .also(AsyncDatabase::initializeDatabase)

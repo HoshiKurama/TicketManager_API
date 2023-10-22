@@ -2,6 +2,7 @@ package com.github.hoshikurama.tmcoroutine
 
 import kotlinx.coroutines.*
 
+@Suppress("Unused")
 /**
  * Handles all Coroutine stuff for TicketManager.
  */

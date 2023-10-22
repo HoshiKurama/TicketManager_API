@@ -10,6 +10,7 @@ import com.github.hoshikurama.ticketmanager.api.registry.playerjoin.PlayerJoinRe
 import kotlin.reflect.KClass
 import kotlin.reflect.full.createInstance
 
+@Suppress("Unused")
 class TMPlayerJoinRegistry : PlayerJoinRegistry {
     private val syncExtensions = mutableListOf<PlayerJoinExtension>()
     private val asyncExtensions = mutableListOf<PlayerJoinExtension>()

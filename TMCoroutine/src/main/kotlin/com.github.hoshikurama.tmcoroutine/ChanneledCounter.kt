@@ -36,6 +36,7 @@ class ChanneledCounter(@Volatile private var value: ULong) {
     suspend fun increment(): Unit = inChannel.send(Increment)
     suspend fun decrement(): Unit = inChannel.send(Decrement)
 
+    @Suppress("Unused")
     fun shutdown() {
         inChannel.close()
         outGet.close()

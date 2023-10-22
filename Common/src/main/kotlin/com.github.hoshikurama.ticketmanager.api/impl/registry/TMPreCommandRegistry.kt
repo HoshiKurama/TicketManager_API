@@ -9,6 +9,7 @@ import com.github.hoshikurama.ticketmanager.api.registry.precommand.PreCommandRe
 import kotlin.reflect.KClass
 import kotlin.reflect.full.createInstance
 
+@Suppress("Unused")
 class TMPreCommandRegistry : PreCommandRegistry {
     private val decidersExtensions = mutableListOf<PreCommandExtension.SyncDecider>()
     private val syncAfterExtensions = mutableListOf<PreCommandExtension.SyncAfter>()

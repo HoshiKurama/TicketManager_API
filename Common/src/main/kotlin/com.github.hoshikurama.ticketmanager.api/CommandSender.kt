@@ -59,6 +59,7 @@ sealed interface CommandSender {
         * Send a chat message to the sender.
         * @param msg Message which is first parsed as a Kyori MiniMessage.
         */
+        @Suppress("Unused")
         fun sendMessage(msg: String) = sendMessage(MiniMessage.miniMessage().deserialize(msg))
 
         /**

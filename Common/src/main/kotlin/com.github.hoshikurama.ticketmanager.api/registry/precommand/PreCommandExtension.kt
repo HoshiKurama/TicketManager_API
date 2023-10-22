@@ -3,9 +3,8 @@ package com.github.hoshikurama.ticketmanager.api.registry.precommand
 import com.github.hoshikurama.ticketmanager.api.CommandSender
 import com.github.hoshikurama.ticketmanager.api.registry.locale.Locale
 import com.github.hoshikurama.ticketmanager.api.registry.permission.Permission
-import com.github.hoshikurama.ticketmanager.api.registry.permission.PermissionExtension
 
-
+@Suppress("Unused")
 sealed interface PreCommandExtension {
 
     fun interface SyncDecider : PreCommandExtension {

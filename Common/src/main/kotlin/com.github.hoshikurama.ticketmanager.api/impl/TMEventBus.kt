@@ -37,6 +37,7 @@ class TMEventBus : TMEventBus {
          */
     }
 
+    @Suppress("Unused")
     suspend fun callAsync(event: TMEvent): Unit = when (event) {
         is TicketCreateEvent -> ticketCreate.forEach { subscriber ->
             TMCoroutine.Supervised.launch {
