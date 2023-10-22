@@ -2,6 +2,7 @@ package com.github.hoshikurama.ticketmanager.api.registry.config
 
 import kotlin.time.Duration
 
+@Suppress("Unused")
 interface Config {
     val proxyOptions: Proxy?
     val visualOptions: Visuals

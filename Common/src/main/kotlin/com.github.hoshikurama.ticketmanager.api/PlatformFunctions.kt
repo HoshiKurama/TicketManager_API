@@ -5,6 +5,7 @@ import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.text.Component
 import java.util.*
 
+@Suppress("Unused")
 interface PlatformFunctions {
     fun massNotify(permission: String, message: Component)
     fun buildPlayer(uuid: UUID): CommandSender.OnlinePlayer?

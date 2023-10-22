@@ -2,6 +2,7 @@ package com.github.hoshikurama.ticketmanager.api.utilities
 
 import java.lang.Exception
 
+@Suppress("Unused")
 sealed class Result<out T> {
     class Success<out T>(val value: T): Result<T>()
     class Failure(val error: Exception): Result<Nothing>()
@@ -24,7 +25,7 @@ sealed class Result<out T> {
     }
 }
 
-
+@Suppress("Unused")
 inline fun <T: Any, U: Any> Result<T?>.mapIfPresent(f: (T) -> U): Result<U?> = when (this) {
     is Result.Failure -> this
     is Result.Success<T?> ->

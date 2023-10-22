@@ -1,5 +1,6 @@
 package com.github.hoshikurama.ticketmanager.api.registry.locale
 
+@Suppress("Unused")
 interface Locale {
 // Core locale file fields
     // Miscellaneous
