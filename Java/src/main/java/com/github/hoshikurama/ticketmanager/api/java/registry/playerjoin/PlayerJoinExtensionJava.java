@@ -7,6 +7,7 @@ import com.github.hoshikurama.ticketmanager.api.registry.locale.Locale;
 import com.github.hoshikurama.ticketmanager.api.registry.permission.Permission;
 import org.jetbrains.annotations.NotNull;
 
+@FunctionalInterface
 public interface PlayerJoinExtensionJava {
     void whenPlayerJoins(
             @NotNull CommandSender.OnlinePlayer player,

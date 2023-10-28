@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 
+@FunctionalInterface
 public interface ConfigExtensionJava {
     @NotNull CompletableFuture<@NotNull Config> load(@NotNull Path tmDirectory) throws @NotNull Exception;
 }

@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
+@FunctionalInterface
 public interface PermissionExtensionJava {
     @NotNull CompletableFuture<@NotNull Permission> load() throws @NotNull Exception;
 }

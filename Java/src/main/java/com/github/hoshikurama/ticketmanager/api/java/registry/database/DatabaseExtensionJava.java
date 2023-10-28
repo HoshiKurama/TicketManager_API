@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 
+@FunctionalInterface
 public interface DatabaseExtensionJava {
     @NotNull CompletableFuture<@NotNull AsyncDatabaseJava> load(
             @NotNull Path tmDirectory,

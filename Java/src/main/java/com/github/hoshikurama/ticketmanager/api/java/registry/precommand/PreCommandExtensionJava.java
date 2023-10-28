@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 public sealed interface PreCommandExtensionJava {
 
+    @FunctionalInterface
     non-sealed interface SyncDecider extends PreCommandExtensionJava {
         @NotNull Decision beforeCommand(
                 @NotNull CommandSender.Active sender,
@@ -16,6 +17,7 @@ public sealed interface PreCommandExtensionJava {
         );
     }
 
+    @FunctionalInterface
     non-sealed interface SyncAfter extends PreCommandExtensionJava {
         void afterCommand(
                 @NotNull CommandSender.Active sender,
@@ -24,6 +26,7 @@ public sealed interface PreCommandExtensionJava {
         );
     }
 
+    @FunctionalInterface
     non-sealed interface AsyncAfter extends PreCommandExtensionJava {
         void afterCommand(
                 @NotNull CommandSender.Active sender,

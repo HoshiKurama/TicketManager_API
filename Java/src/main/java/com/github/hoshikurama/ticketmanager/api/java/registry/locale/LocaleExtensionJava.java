@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 
+@FunctionalInterface
 public interface LocaleExtensionJava {
     @NotNull CompletableFuture<@NotNull Locale> load(@NotNull Path tmDirectory, @NotNull Config config) throws @NotNull Exception;
 }
