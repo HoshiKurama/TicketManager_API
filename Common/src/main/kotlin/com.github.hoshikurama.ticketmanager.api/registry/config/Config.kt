@@ -3,6 +3,10 @@ package com.github.hoshikurama.ticketmanager.api.registry.config
 import kotlin.time.Duration
 
 @Suppress("Unused")
+/**
+ * This interface specifies what any config MUST provide to TicketManager. Nullable variables
+ * indicate that the particular field was set to enabled if it exists and false if disabled.
+ */
 interface Config {
     val proxyOptions: Proxy?
     val visualOptions: Visuals
@@ -27,9 +31,3 @@ interface Config {
         val consistentColourCode: String
     }
 }
-
-/* TODO: Move cooldowns to precommand extension (New extension)
-// Cooldowns
-    val enableCooldowns: Boolean            // replaces allowCooldowns
-    val cooldownDuration: Duration          // replaces cooldownSeconds
- */

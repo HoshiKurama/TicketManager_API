@@ -7,6 +7,9 @@ import com.github.hoshikurama.ticketmanager.api.registry.locale.Locale
 import com.github.hoshikurama.ticketmanager.api.registry.permission.Permission
 import kotlin.time.Duration
 
+/**
+ * Represents an extension which is designed to execute some chunk of command at regular intervals.
+ */
 interface RepeatingTaskExtension {
     val frequency: Duration
 

@@ -1,4 +1,4 @@
-package com.github.hoshikurama.ticketmanager.api.event.events
+package com.github.hoshikurama.ticketmanager.api.events
 
 import com.github.hoshikurama.ticketmanager.api.CommandSender
 import com.github.hoshikurama.ticketmanager.api.ticket.ActionInfo
@@ -12,8 +12,14 @@ data class TicketCreateEvent(
     val modification: ActionInfo.Open,
 ) : TMEvent
 
-
+/**
+ * Any event where an existing ticket is modified in some way.
+ */
 sealed interface TicketModifyEvent : TMEvent
+
+/**
+ * Describes an event in which a ticket is closed, both with or without a comment.
+ */
 sealed interface TicketCloseEvent: TMEvent
 
 data class TicketAssignEvent(
@@ -72,6 +78,3 @@ data class TicketMassCloseEvent(
     val upperBound: Long,
     val modification: ActionInfo.MassClose,
 ) : TMEvent, TicketModifyEvent
-
-
-

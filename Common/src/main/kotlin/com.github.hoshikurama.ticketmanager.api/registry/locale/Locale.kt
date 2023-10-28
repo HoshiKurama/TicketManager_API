@@ -1,6 +1,9 @@
 package com.github.hoshikurama.ticketmanager.api.registry.locale
 
 @Suppress("Unused")
+/**
+ * Describes the Strings that any Locale instance MUST provide to TicketManager
+ */
 interface Locale {
 // Core locale file fields
     // Miscellaneous
