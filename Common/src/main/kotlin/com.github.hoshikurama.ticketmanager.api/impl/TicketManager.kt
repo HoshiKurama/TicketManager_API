@@ -1,7 +1,6 @@
 package com.github.hoshikurama.ticketmanager.api.impl
 
 import com.github.hoshikurama.ticketmanager.api.impl.registry.*
-import com.github.hoshikurama.ticketmanager.api.event.TMEventBus as TMEventBusAPI
 
 object TicketManager {
     val ConfigRegistry = TMConfigRegistry()
@@ -11,7 +10,5 @@ object TicketManager {
     val PlayerJoinRegistry = TMPlayerJoinRegistry()
     val PreCommandRegistry = TMPreCommandRegistry()
     val RepeatingTaskRegistry = TMRepeatingTaskRegistry()
-    val EventBus = TMEventBus() as TMEventBusAPI
+    val EventBus = TMEventBus()
 }
-
-// Dependency injection via https://www.baeldung.com/kotlin/kclass-new-instance

@@ -1,7 +1,9 @@
 package com.github.hoshikurama.ticketmanager.api.java.event;
 
-import com.github.hoshikurama.ticketmanager.api.event.events.TMEvent;
+import com.github.hoshikurama.ticketmanager.api.events.TMEvent;
+
+import java.util.function.Consumer;
 
 public interface TMEventBusJava {
-    <Event extends TMEvent> void subscribe(TMEventListenerJava<Event> listener);
+    Runnable subscribe(Consumer<TMEvent> listener);
 }

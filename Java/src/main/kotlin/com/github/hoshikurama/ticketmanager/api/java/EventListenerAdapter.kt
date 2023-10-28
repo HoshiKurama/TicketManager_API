@@ -1,11 +1,11 @@
 package com.github.hoshikurama.ticketmanager.api.java
 
-import com.github.hoshikurama.ticketmanager.api.event.TMEventListener
-import com.github.hoshikurama.ticketmanager.api.event.events.TMEvent
-import com.github.hoshikurama.ticketmanager.api.java.event.TMEventListenerJava
+import com.github.hoshikurama.ticketmanager.api.events.TMEvent
+import com.github.hoshikurama.ticketmanager.api.impl.TicketManager
+import java.util.function.Consumer
 
-class EventListenerAdapter<Event : TMEvent>(private val javaVersion: TMEventListenerJava<Event>) : TMEventListener<Event> {
-    override suspend fun onEvent(event: Event) {
-        javaVersion.onEvent(event)
+object EventListenerAdapter {
+    fun exposedSubscribe(javaListener: Consumer<TMEvent>): () -> Unit {
+        return TicketManager.EventBus.subscribe<TMEvent>(javaListener::accept)
     }
 }
