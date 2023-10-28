@@ -1,7 +1,7 @@
 package com.github.hoshikurama.ticketmanager.api.java.impl;
 
 import com.github.hoshikurama.ticketmanager.api.events.TMEvent;
-import com.github.hoshikurama.ticketmanager.api.java.event.TMEventBusJava;
+import com.github.hoshikurama.ticketmanager.api.java.events.TMEventBusJava;
 import com.github.hoshikurama.ticketmanager.api.java.EventListenerAdapter;
 
 import java.util.function.Consumer;

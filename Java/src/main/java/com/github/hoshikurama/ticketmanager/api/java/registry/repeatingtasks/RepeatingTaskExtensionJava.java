@@ -6,6 +6,9 @@ import com.github.hoshikurama.ticketmanager.api.registry.locale.Locale;
 import com.github.hoshikurama.ticketmanager.api.registry.permission.Permission;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Represents an extension which is designed to execute some chunk of command at regular intervals.
+ */
 public interface RepeatingTaskExtensionJava {
     @NotNull Double getFrequencySeconds();
 

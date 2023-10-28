@@ -12,9 +12,6 @@ import com.github.hoshikurama.ticketmanager.api.registry.permission.Permission
  * coroutine dispatcher pool.
  */
 fun interface PlayerJoinExtension {
-    /**
-     * Runs using current instances
-     */
     suspend fun whenPlayerJoins(
         player: CommandSender.OnlinePlayer,
         platformFunctions: PlatformFunctions,
