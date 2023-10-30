@@ -6,84 +6,98 @@ import com.github.hoshikurama.ticketmanager.api.ticket.Creator
 
 /**
  * Root event for all ticket modifications or creations
+ * @property commandSender User who caused the change. This can be either a player or Console.
  */
 sealed interface TicketEvent : TMEvent {
     val commandSender: CommandSender.Active
 }
 
 /**
- * Events in which an existing ticket is modified in some way.
+ * Any ticket event where an action pertains to one and only one ticket.
+ * @property id id of the affected ticket
+ * @property creator creator of the affected ticket
  */
-sealed interface TicketModifyEvent : TicketEvent {
+sealed interface SingleTicketEffectEvent : TicketEvent {
+    val id: Long
+    val creator: Creator
+}
+
+/**
+ * Any ticket event that can be silent.
+ * @property wasSilent was the event executed silently
+ */
+sealed interface CanBeSilentTicketEvent : TicketEvent {
     val wasSilent: Boolean
 }
 
 /**
- * An event in which a ticket is closed
+ * An event in which a ticket becomes closed either directly (close) or indirectly (mass-close)
  */
-sealed interface TicketCloseEvent: TicketModifyEvent
+sealed interface TicketCloseEvent: CanBeSilentTicketEvent
+
+
+// Implementations
 
 data class TicketCreateEvent(
     override val commandSender: CommandSender.Active,
-    val ticketCreator: Creator,
-    val wasSilent: Boolean,
-    val ticketID: Long,
+    override val creator: Creator,
+    override val id: Long,
     val modification: ActionInfo.Open,
-) : TicketEvent
+) : SingleTicketEffectEvent
 
 data class TicketMassCloseEvent(
     override val commandSender: CommandSender.Active,
-    val wasSilent: Boolean,
+    override val wasSilent: Boolean,
     val lowerBound: Long,
     val upperBound: Long,
     val modification: ActionInfo.MassClose,
-) : TicketEvent
+) : CanBeSilentTicketEvent, TicketCloseEvent
 
 data class TicketAssignEvent(
     override val commandSender: CommandSender.Active,
-    val ticketCreator: Creator,
     override val wasSilent: Boolean,
-    val ticketID: Long,
+    override val creator: Creator,
+    override val id: Long,
     val modification: ActionInfo.Assign,
-) : TicketModifyEvent
+) : SingleTicketEffectEvent, CanBeSilentTicketEvent
 
 data class TicketCommentEvent(
     override val commandSender: CommandSender.Active,
-    val ticketCreator: Creator,
     override val wasSilent: Boolean,
-    val ticketID: Long,
+    override val creator: Creator,
+    override val id: Long,
     val modification: ActionInfo.Comment,
-) : TicketModifyEvent
+) : SingleTicketEffectEvent, CanBeSilentTicketEvent
 
 data class TicketReopenEvent(
     override val commandSender: CommandSender.Active,
-    val ticketCreator: Creator,
+    override val creator: Creator,
     override val wasSilent: Boolean,
-    val ticketID: Long,
+    override val id: Long,
     val modification: ActionInfo.Reopen,
-) : TicketModifyEvent
+) : SingleTicketEffectEvent, CanBeSilentTicketEvent
 
 data class TicketCloseWithCommentEvent(
     override val commandSender: CommandSender.Active,
-    val ticketCreator: Creator,
     override val wasSilent: Boolean,
-    val ticketID: Long,
+    override val creator: Creator,
+    override val id: Long,
     val modification: ActionInfo.CloseWithComment,
-) : TicketCloseEvent
+) : SingleTicketEffectEvent, TicketCloseEvent
 
 
 data class TicketCloseWithoutCommentEvent(
     override val commandSender: CommandSender.Active,
-    val ticketCreator: Creator,
     override val wasSilent: Boolean,
-    val ticketID: Long,
+    override val creator: Creator,
+    override val id: Long,
     val modification: ActionInfo.CloseWithoutComment,
-) : TicketCloseEvent
+) : SingleTicketEffectEvent, TicketCloseEvent
 
 data class TicketSetPriorityEvent(
     override val commandSender: CommandSender.Active,
-    val ticketCreator: Creator,
+    override val creator: Creator,
     override val wasSilent: Boolean,
-    val ticketID: Long,
+    override val id: Long,
     val modification: ActionInfo.SetPriority,
-) : TicketModifyEvent
+) : SingleTicketEffectEvent, CanBeSilentTicketEvent
