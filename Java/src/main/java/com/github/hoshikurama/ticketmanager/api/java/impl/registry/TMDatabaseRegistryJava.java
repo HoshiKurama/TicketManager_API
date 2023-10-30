@@ -1,6 +1,7 @@
 package com.github.hoshikurama.ticketmanager.api.java.impl.registry;
 
 import com.github.hoshikurama.ticketmanager.api.impl.TicketManager;
+import com.github.hoshikurama.ticketmanager.api.impl.registry.TMDatabaseRegistry;
 import com.github.hoshikurama.ticketmanager.api.java.DatabaseExtensionAdapter;
 import com.github.hoshikurama.ticketmanager.api.java.registry.database.DatabaseExtensionJava;
 import com.github.hoshikurama.ticketmanager.api.java.registry.database.DatabaseRegistryJava;
@@ -13,7 +14,7 @@ public class TMDatabaseRegistryJava implements DatabaseRegistryJava {
 
     @Override
     public @NotNull RegistrationResult register(@NotNull Class<? extends DatabaseExtensionJava> clazz) {
-        final var realRegistry = TicketManager.INSTANCE.getDatabaseRegistry();
+        final var realRegistry = (TMDatabaseRegistry) TicketManager.INSTANCE.getDatabaseRegistry();
 
         if (realRegistry.extensionInitialized())
             return new Rejected(Reason.HAS_REGISTRATION.INSTANCE);

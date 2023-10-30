@@ -1,6 +1,7 @@
 package com.github.hoshikurama.ticketmanager.api.java.impl.registry;
 
 import com.github.hoshikurama.ticketmanager.api.impl.TicketManager;
+import com.github.hoshikurama.ticketmanager.api.impl.registry.TMPermissionRegistry;
 import com.github.hoshikurama.ticketmanager.api.java.PermissionExtensionAdapter;
 import com.github.hoshikurama.ticketmanager.api.java.registry.permission.PermissionExtensionJava;
 import com.github.hoshikurama.ticketmanager.api.java.registry.permission.PermissionRegistryJava;
@@ -12,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class TMPermissionRegistryJava implements PermissionRegistryJava {
     @Override
     public @NotNull RegistrationResult register(@NotNull Class<? extends PermissionExtensionJava> clazz) {
-        final var realRegistry = TicketManager.INSTANCE.getPermissionRegistry();
+        final var realRegistry = (TMPermissionRegistry) TicketManager.INSTANCE.getPermissionRegistry();
 
         if (realRegistry.extensionInitialized())
             return new Rejected(Reason.HAS_REGISTRATION.INSTANCE);

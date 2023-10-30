@@ -1,6 +1,7 @@
 package com.github.hoshikurama.ticketmanager.api.java.impl.registry;
 
 import com.github.hoshikurama.ticketmanager.api.impl.TicketManager;
+import com.github.hoshikurama.ticketmanager.api.impl.registry.TMLocaleRegistry;
 import com.github.hoshikurama.ticketmanager.api.java.LocaleExtensionAdapter;
 import com.github.hoshikurama.ticketmanager.api.java.registry.locale.LocaleExtensionJava;
 import com.github.hoshikurama.ticketmanager.api.java.registry.locale.LocaleRegistryJava;
@@ -12,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class TMLocaleRegistryJava implements LocaleRegistryJava {
     @Override
     public @NotNull RegistrationResult register(@NotNull Class<? extends LocaleExtensionJava> clazz) {
-        final var realRegistry = TicketManager.INSTANCE.getLocaleRegistry();
+        final var realRegistry = (TMLocaleRegistry) TicketManager.INSTANCE.getLocaleRegistry();
 
         if (realRegistry.extensionInitialized())
             return new Rejected(Reason.HAS_REGISTRATION.INSTANCE);

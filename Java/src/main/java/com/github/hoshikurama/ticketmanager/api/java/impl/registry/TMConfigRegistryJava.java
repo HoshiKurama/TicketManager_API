@@ -1,6 +1,7 @@
 package com.github.hoshikurama.ticketmanager.api.java.impl.registry;
 
 import com.github.hoshikurama.ticketmanager.api.impl.TicketManager;
+import com.github.hoshikurama.ticketmanager.api.impl.registry.TMConfigRegistry;
 import com.github.hoshikurama.ticketmanager.api.java.ConfigExtensionAdapter;
 import com.github.hoshikurama.ticketmanager.api.java.registry.config.ConfigExtensionJava;
 import com.github.hoshikurama.ticketmanager.api.java.registry.config.ConfigRegistryJava;
@@ -14,7 +15,7 @@ public class TMConfigRegistryJava implements ConfigRegistryJava {
     @NotNull
     @Override
     public RegistrationResult register(@NotNull Class<? extends ConfigExtensionJava> clazz) {
-        final var realRegistry = TicketManager.INSTANCE.getConfigRegistry();
+        final var realRegistry = (TMConfigRegistry) TicketManager.INSTANCE.getConfigRegistry();
 
         if (realRegistry.extensionInitialized())
             return new Rejected(Reason.HAS_REGISTRATION.INSTANCE);
