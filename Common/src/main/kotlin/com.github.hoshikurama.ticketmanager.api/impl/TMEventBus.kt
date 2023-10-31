@@ -50,12 +50,10 @@ class TMEventBus {
             internal.ticketCloseWithComment[uuid] = eventListener as TMEL<TicketCloseWithCommentEvent>
         if (Event::class.isAssignableFrom(TicketCloseWithoutCommentEvent::class))
             internal.ticketCloseWithoutComment[uuid] = eventListener as TMEL<TicketCloseWithoutCommentEvent>
+        if (Event::class.isAssignableFrom(TicketReadReceiptEvent::class))
+            internal.ticketReadReceipt[uuid] = eventListener as TMEL<TicketReadReceiptEvent>
 
-        return internal.run {{
-            listOf(ticketCreate, ticketAssign, ticketReopen, ticketComment, ticketMassClose,
-                ticketSetPriority, ticketCloseWithComment, ticketCloseWithoutComment
-            ).forEach { it.remove(uuid) }
-        }}
+        return { internal.allEvents.forEach { it.remove(uuid) } }
     }
 
     // Anything past this point is internal and does not concern end-users
@@ -75,6 +73,10 @@ class TMEventBus {
         val ticketCloseWithComment = ConcurrentHashMap<UUID, TMEL<TicketCloseWithCommentEvent>>()
         val ticketCloseWithoutComment = ConcurrentHashMap<UUID, TMEL<TicketCloseWithoutCommentEvent>>()
         val ticketReadReceipt = ConcurrentHashMap<UUID, TMEL<TicketReadReceiptEvent>>()
+
+        val allEvents = listOf(ticketCreate, ticketAssign, ticketReopen, ticketComment, ticketMassClose,
+            ticketSetPriority, ticketCloseWithComment, ticketCloseWithoutComment, ticketReadReceipt,
+        )
 
         /**
          * Internally used to store events in such a way to allow contravariance
