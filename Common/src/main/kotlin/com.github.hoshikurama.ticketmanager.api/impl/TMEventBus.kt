@@ -74,6 +74,7 @@ class TMEventBus {
         val ticketSetPriority = ConcurrentHashMap<UUID, TMEL<TicketSetPriorityEvent>>()
         val ticketCloseWithComment = ConcurrentHashMap<UUID, TMEL<TicketCloseWithCommentEvent>>()
         val ticketCloseWithoutComment = ConcurrentHashMap<UUID, TMEL<TicketCloseWithoutCommentEvent>>()
+        val ticketReadReceipt = ConcurrentHashMap<UUID, TMEL<TicketReadReceiptEvent>>()
 
         /**
          * Internally used to store events in such a way to allow contravariance
@@ -87,46 +88,23 @@ class TMEventBus {
          * Internally used by TicketManager to call events.
          */
         suspend fun callAsync(event: TMEvent): Unit = when (event) {
-            is TicketCreateEvent -> ticketCreate.values.forEach { subscriber ->
-                TMCoroutine.Supervised.launch {
-                    safeExecute { subscriber.onEvent(event) }
-                }
-            }
-            is TicketCommentEvent -> ticketComment.values.forEach { subscriber ->
-                TMCoroutine.Supervised.launch {
-                    safeExecute { subscriber.onEvent(event) }
-                }
-            }
-            is TicketAssignEvent -> ticketAssign.values.forEach { subscriber ->
-                TMCoroutine.Supervised.launch {
-                    safeExecute { subscriber.onEvent(event) }
-                }
-            }
-            is TicketReopenEvent -> ticketReopen.values.forEach { subscriber ->
-                TMCoroutine.Supervised.launch {
-                    safeExecute { subscriber.onEvent(event) }
-                }
-            }
-            is TicketCloseWithCommentEvent -> ticketCloseWithComment.values.forEach { subscriber ->
-                TMCoroutine.Supervised.launch {
-                    safeExecute { subscriber.onEvent(event) }
-                }
-            }
-            is TicketCloseWithoutCommentEvent -> ticketCloseWithoutComment.values.forEach { subscriber ->
-                TMCoroutine.Supervised.launch {
-                    safeExecute { subscriber.onEvent(event) }
-                }
-            }
-            is TicketSetPriorityEvent -> ticketSetPriority.values.forEach { subscriber ->
-                TMCoroutine.Supervised.launch {
-                    safeExecute { subscriber.onEvent(event) }
-                }
-            }
-            is TicketMassCloseEvent -> ticketMassClose.values.forEach { subscriber ->
-                TMCoroutine.Supervised.launch {
-                    safeExecute { subscriber.onEvent(event) }
-                }
-            }
+            is TicketCreateEvent -> ticketCreate.execute(event)
+            is TicketCommentEvent -> ticketComment.execute(event)
+            is TicketAssignEvent -> ticketAssign.execute(event)
+            is TicketReopenEvent -> ticketReopen.execute(event)
+            is TicketCloseWithCommentEvent -> ticketCloseWithComment.execute(event)
+            is TicketCloseWithoutCommentEvent -> ticketCloseWithoutComment.execute(event)
+            is TicketSetPriorityEvent -> ticketSetPriority.execute(event)
+            is TicketMassCloseEvent -> ticketMassClose.execute(event)
+            is TicketReadReceiptEvent -> ticketReadReceipt.execute(event)
+        }
+    }
+}
+
+private suspend fun <Event : TMEvent> ConcurrentHashMap<UUID, TMEL<Event>>.execute(event: Event) {
+    this.values.forEach { subscriber ->
+        TMCoroutine.Supervised.launch {
+            safeExecute { subscriber.onEvent(event) }
         }
     }
 }

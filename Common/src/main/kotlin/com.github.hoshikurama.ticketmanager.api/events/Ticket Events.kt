@@ -9,7 +9,7 @@ import com.github.hoshikurama.ticketmanager.api.ticket.Creator
  * Represents all events related to tickets
  * @property commandSender User who caused the event to be fired (player or console)
  */
-sealed interface TicketEvent {
+sealed interface TicketEvent : TMEvent {
     val commandSender: CommandSender.Active
 
     /**
