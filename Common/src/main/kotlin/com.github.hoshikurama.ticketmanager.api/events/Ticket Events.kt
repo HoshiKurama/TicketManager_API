@@ -1,103 +1,117 @@
 package com.github.hoshikurama.ticketmanager.api.events
 
 import com.github.hoshikurama.ticketmanager.api.CommandSender
+import com.github.hoshikurama.ticketmanager.api.ticket.Action
 import com.github.hoshikurama.ticketmanager.api.ticket.ActionInfo
 import com.github.hoshikurama.ticketmanager.api.ticket.Creator
 
 /**
- * Root event for all ticket modifications or creations
- * @property commandSender User who caused the change. This can be either a player or Console.
+ * Represents all events related to tickets
+ * @property commandSender User who caused the event to be fired (player or console)
  */
-sealed interface TicketEvent : TMEvent {
+sealed interface TicketEvent {
     val commandSender: CommandSender.Active
+
+    /**
+     * Holds information about a ticket action that has occurred. As outlined in its
+     * documentation, an action can represent either a modification to an existing ticket, or it can represent
+     * the creation of a new ticket.
+     * @property action The action which occurred
+     */
+    sealed interface WithAction : TicketEvent {
+        val action: Action
+    }
+
+    /**
+     * Both indicates that an event can be executed silently and contains information pertaining to if the event was
+     * caused by a command executed silently.
+     * @property wasSilent was the event executed silently
+     */
+    sealed interface CanBeSilent : TicketEvent {
+        val wasSilent: Boolean
+    }
+
+    /**
+     * Represents a ticket event containing an action that impacts only one ticket.
+     * @property creator creator of the impacted ticket
+     * @property action performed on the ticket
+     * @property id id of the affected ticket
+     */
+    sealed interface SingleTicketAction : TicketEvent, WithAction  {
+        val creator: Creator
+        val id: Long
+    }
 }
 
-/**
- * Any ticket event where an action pertains to one and only one ticket.
- * @property id id of the affected ticket
- * @property creator creator of the affected ticket
- */
-sealed interface SingleTicketEffectEvent : TicketEvent {
-    val id: Long
-    val creator: Creator
-}
-
-/**
- * Any ticket event that can be silent.
- * @property wasSilent was the event executed silently
- */
-sealed interface CanBeSilentTicketEvent : TicketEvent {
-    val wasSilent: Boolean
-}
-
-/**
- * An event in which a ticket becomes closed either directly (close) or indirectly (mass-close)
- */
-sealed interface TicketCloseEvent: CanBeSilentTicketEvent
-
-
-// Implementations
+// Individual events
 
 data class TicketCreateEvent(
     override val commandSender: CommandSender.Active,
     override val creator: Creator,
     override val id: Long,
-    val modification: ActionInfo.Open,
-) : SingleTicketEffectEvent
+    override val action: ActionInfo.Open,
+) : TicketEvent.SingleTicketAction
 
 data class TicketMassCloseEvent(
     override val commandSender: CommandSender.Active,
     override val wasSilent: Boolean,
     val lowerBound: Long,
     val upperBound: Long,
-    val modification: ActionInfo.MassClose,
-) : CanBeSilentTicketEvent, TicketCloseEvent
+    val action: ActionInfo.MassClose,
+) : TicketEvent.CanBeSilent
 
 data class TicketAssignEvent(
     override val commandSender: CommandSender.Active,
     override val wasSilent: Boolean,
     override val creator: Creator,
     override val id: Long,
-    val modification: ActionInfo.Assign,
-) : SingleTicketEffectEvent, CanBeSilentTicketEvent
+    override val action: ActionInfo.Assign,
+) : TicketEvent.SingleTicketAction, TicketEvent.CanBeSilent
 
 data class TicketCommentEvent(
     override val commandSender: CommandSender.Active,
     override val wasSilent: Boolean,
     override val creator: Creator,
     override val id: Long,
-    val modification: ActionInfo.Comment,
-) : SingleTicketEffectEvent, CanBeSilentTicketEvent
+    override val action: ActionInfo.Comment,
+) : TicketEvent.SingleTicketAction, TicketEvent.CanBeSilent
 
 data class TicketReopenEvent(
     override val commandSender: CommandSender.Active,
     override val creator: Creator,
     override val wasSilent: Boolean,
     override val id: Long,
-    val modification: ActionInfo.Reopen,
-) : SingleTicketEffectEvent, CanBeSilentTicketEvent
+    override val action: ActionInfo.Reopen,
+) : TicketEvent.SingleTicketAction, TicketEvent.CanBeSilent
 
 data class TicketCloseWithCommentEvent(
     override val commandSender: CommandSender.Active,
     override val wasSilent: Boolean,
     override val creator: Creator,
     override val id: Long,
-    val modification: ActionInfo.CloseWithComment,
-) : SingleTicketEffectEvent, TicketCloseEvent
-
+    override val action: ActionInfo.CloseWithComment,
+) : TicketEvent.SingleTicketAction, TicketEvent.CanBeSilent
 
 data class TicketCloseWithoutCommentEvent(
     override val commandSender: CommandSender.Active,
     override val wasSilent: Boolean,
     override val creator: Creator,
     override val id: Long,
-    val modification: ActionInfo.CloseWithoutComment,
-) : SingleTicketEffectEvent, TicketCloseEvent
+    override val action: ActionInfo.CloseWithoutComment,
+) : TicketEvent.SingleTicketAction, TicketEvent.CanBeSilent
 
 data class TicketSetPriorityEvent(
     override val commandSender: CommandSender.Active,
-    override val creator: Creator,
     override val wasSilent: Boolean,
+    override val creator: Creator,
     override val id: Long,
-    val modification: ActionInfo.SetPriority,
-) : SingleTicketEffectEvent, CanBeSilentTicketEvent
+    override val action: ActionInfo.SetPriority,
+) : TicketEvent.SingleTicketAction, TicketEvent.CanBeSilent
+
+/**
+ * Similar to SMS read receipts, this represents when a user reads a ticket which has unread changes.
+ */
+data class TicketReadReceiptEvent(
+    override val commandSender: CommandSender.Active,
+    val id: Long,
+): TicketEvent
