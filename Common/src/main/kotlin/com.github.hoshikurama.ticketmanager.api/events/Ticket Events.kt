@@ -54,11 +54,11 @@ data class TicketCreateEvent(
 
 data class TicketMassCloseEvent(
     override val commandSender: CommandSender.Active,
+    override val action: ActionInfo.MassClose,
     override val wasSilent: Boolean,
     val lowerBound: Long,
     val upperBound: Long,
-    val action: ActionInfo.MassClose,
-) : TicketEvent.CanBeSilent
+) : TicketEvent.CanBeSilent, TicketEvent.WithAction
 
 data class TicketAssignEvent(
     override val commandSender: CommandSender.Active,
