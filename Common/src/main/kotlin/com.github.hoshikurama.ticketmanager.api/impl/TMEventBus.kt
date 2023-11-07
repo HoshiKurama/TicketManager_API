@@ -12,14 +12,12 @@ private typealias TMEL<T> = TMEventBus.Internal.EventListener<T>
  * The TMEventBus distributes all TicketManager events to any subscribed listeners in a thread-safe manner. To initiate a listener, call
  * the #subscribe() function with the event type. Please note:
  * - Event must be a subtype of TMEvent.
- * - The listener is also called for any supertype listeners. For example, TicketCloseEvent receives both
- * TicketCloseWithCommentEvent & TicketCloseWithoutCommentEvent events.
+ * - The listener is also called for any supertype listeners. For example, TicketEvent receives all ticket-related events.
  * - New subscriptions can be created or destroyed on any thread and at any time.
  *
- * Note: TMEventBus differs from other registration points in that it is a concrete class. This is necessary because
- * to provide an awesome registration syntax, the bus inlines the subscribe code directly into your code. Consequently,
- * all internals are exposed by the bus. It's HIGHLY recommended that you not mess with anything inside the internal
- * property unless you have a very good reason for doing so.
+ * NOTE: TMEventBus differs from other registration points as it exposes all internals. This is necessary as #subscribe()
+ * is reified to provide developers with an awesome syntax. All internals are encapsulated by the internal property to
+ * prevent accidental usage. Please don't use internals unless you have a very good reason for doing so.
  */
 class TMEventBus {
     val internal = Internal()
@@ -28,7 +26,6 @@ class TMEventBus {
      *  Allows users to subscribe to TicketManager events. This can be called at any time and on any thread.
      *  @return a function to unregister your listener
      */
-
     @Suppress("UNCHECKED_CAST")
     inline fun <reified Event : TMEvent> subscribe(noinline listener: suspend (Event) -> Unit): () -> Unit {
         val eventListener = Internal.EventListener(listener)
