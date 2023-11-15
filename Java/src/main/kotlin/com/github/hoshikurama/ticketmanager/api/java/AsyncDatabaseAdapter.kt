@@ -1,4 +1,4 @@
-package com.github.hoshikurama.ticketmanager.api.java.kotlinAdapters.registry
+package com.github.hoshikurama.ticketmanager.api.java
 
 import com.github.hoshikurama.ticketmanager.api.registry.database.AsyncDatabase
 import com.github.hoshikurama.ticketmanager.api.java.registry.database.AsyncDatabaseJava

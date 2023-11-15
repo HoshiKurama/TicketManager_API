@@ -2,7 +2,6 @@ package com.github.hoshikurama.ticketmanager.api.java
 
 import com.github.hoshikurama.ticketmanager.api.CommandSender
 import com.github.hoshikurama.ticketmanager.api.PlatformFunctions
-import com.github.hoshikurama.ticketmanager.api.java.kotlinAdapters.registry.AsyncDatabaseAdapter
 import com.github.hoshikurama.ticketmanager.api.java.registry.config.ConfigExtensionJava
 import com.github.hoshikurama.ticketmanager.api.java.registry.database.DatabaseExtensionJava
 import com.github.hoshikurama.ticketmanager.api.java.registry.locale.LocaleExtensionJava
