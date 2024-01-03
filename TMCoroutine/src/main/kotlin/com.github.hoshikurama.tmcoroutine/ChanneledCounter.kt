@@ -20,8 +20,8 @@ class ChanneledCounter(@Volatile private var value: ULong) {
                 when (msg) {
                     Get -> outGet.send(value)
                     is Set -> value = msg.value
-                    Decrement -> value += 1UL
-                    Increment -> value -= 1UL
+                    Increment -> value += 1UL
+                    Decrement -> value -= 1UL
                 }
             }
         }
