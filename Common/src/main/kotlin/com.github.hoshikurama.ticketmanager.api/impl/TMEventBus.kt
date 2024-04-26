@@ -27,7 +27,7 @@ class TMEventBus {
      *
      * @return function that unregisters [listener] when invoked.
      */
-    @Suppress("UNCHECKED_CAST")
+    @Suppress("UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
     inline fun <reified Event : TMEvent> subscribe(noinline listener: suspend (Event) -> Unit): () -> Unit {
         val eventListener = Internal.EventListener(listener)
         val eventType = typeOf<Event>()

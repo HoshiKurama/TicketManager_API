@@ -18,5 +18,6 @@ public interface TMEventBusJava {
      * Allows users to subscribe to TicketManager events. This can be called at any time and on any thread.
      * @return a function to unregister your listener
      */
+    @SuppressWarnings("unused")
     <Event extends TMEvent> Runnable subscribe(Class<Event> eventClass, Consumer<Event> listener);
 }
