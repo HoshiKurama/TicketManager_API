@@ -22,4 +22,17 @@ public interface TMEventBusJava {
      */
     @SuppressWarnings("unused")
     <Event extends TMEvent> Runnable subscribe(Class<Event> eventClass, Consumer<Event> listener);
+
+    /**
+     * Registers a listener which subscribes to all TicketManager events. See TMEvent above for more information about
+     * the event bus.
+     *
+     * @deprecated
+     * Since API 11.1.0, {@link #subscribe(Class, Consumer)} allows users to specify which event(s) they wish to
+     * subscribe to. This function will be removed as early as API 12.
+     *
+     * @param listener registered listener
+     * @return function that unregisters the listener when invoked.
+     */
+    Runnable subscribe(Consumer<TMEvent> listener);
 }

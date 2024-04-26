@@ -39,4 +39,9 @@ public class TMEventBusJavaImpl implements TMEventBusJava {
 
         return () -> internal.getAllEvents().forEach((map) -> map.remove(uuid));
     }
+
+    @Override
+    public Runnable subscribe(Consumer<TMEvent> listener) {
+        return subscribe(TMEvent.class, listener);
+    }
 }
