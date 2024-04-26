@@ -4,50 +4,52 @@ import com.github.hoshikurama.ticketmanager.api.events.*
 import com.github.hoshikurama.tmcoroutine.TMCoroutine
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
-import kotlin.reflect.KClass
+import kotlin.reflect.full.isSupertypeOf
+import kotlin.reflect.typeOf
 
 private typealias TMEL<T> = TMEventBus.Internal.EventListener<T>
 
 /**
- * The TMEventBus distributes all TicketManager events to any subscribed listeners in a thread-safe manner. To initiate a listener, call
- * the #subscribe() function with the event type. Please note:
- * - Event must be a subtype of TMEvent.
- * - The listener is also called for any supertype listeners. For example, TicketEvent receives all ticket-related events.
- * - New subscriptions can be created or destroyed on any thread and at any time.
+ * The TMEventBus distributes TicketManager events of supertype [TMEvent] to subscribed listeners registered via the [subscribe] function. These
+ * listeners begin execution asynchronously in an off-thread suspendable coroutine. Registration and deregistration are
+ * thread-safe.
  *
- * NOTE: TMEventBus differs from other registration points as it exposes all internals. This is necessary as #subscribe()
- * is reified to provide developers with an awesome syntax. All internals are encapsulated by the internal property to
- * prevent accidental usage. Please don't use internals unless you have a very good reason for doing so.
+ * @property internal encapsulates exposed internals because [subscribe] is reified (for awesome syntax). Developers should not access this property
+ * unless absolutely necessary.
  */
 class TMEventBus {
     val internal = Internal()
 
     /**
-     *  Allows users to subscribe to TicketManager events. This can be called at any time and on any thread.
-     *  @return a function to unregister your listener
+     * Registers a [listener] which will execute when [Event] is either: (1) a supertype of or (2) the same type as the
+     * fired event. The function is reified to allow for an awesome syntax. See [TMEvent] for more information about the
+     * event bus.
+     *
+     * @return function that unregisters [listener] when invoked.
      */
     @Suppress("UNCHECKED_CAST")
     inline fun <reified Event : TMEvent> subscribe(noinline listener: suspend (Event) -> Unit): () -> Unit {
         val eventListener = Internal.EventListener(listener)
+        val eventType = typeOf<Event>()
         val uuid = UUID.randomUUID()
 
-        if (Event::class.isAssignableFrom(TicketCreateEvent::class))
+        if (eventType.isSupertypeOf(typeOf<TicketCreateEvent>()))
             internal.ticketCreate[uuid] = eventListener as TMEL<TicketCreateEvent>
-        if (Event::class.isAssignableFrom(TicketAssignEvent::class))
+        if (eventType.isSupertypeOf(typeOf<TicketAssignEvent>()))
             internal.ticketAssign[uuid] = eventListener as TMEL<TicketAssignEvent>
-        if (Event::class.isAssignableFrom(TicketReopenEvent::class))
+        if (eventType.isSupertypeOf(typeOf<TicketReopenEvent>()))
             internal.ticketReopen[uuid] = eventListener as TMEL<TicketReopenEvent>
-        if (Event::class.isAssignableFrom(TicketCommentEvent::class))
+        if (eventType.isSupertypeOf(typeOf<TicketCommentEvent>()))
             internal.ticketComment[uuid] = eventListener as TMEL<TicketCommentEvent>
-        if (Event::class.isAssignableFrom(TicketMassCloseEvent::class))
+        if (eventType.isSupertypeOf(typeOf<TicketMassCloseEvent>()))
             internal.ticketMassClose[uuid] = eventListener as TMEL<TicketMassCloseEvent>
-        if (Event::class.isAssignableFrom(TicketSetPriorityEvent::class))
+        if (eventType.isSupertypeOf(typeOf<TicketSetPriorityEvent>()))
             internal.ticketSetPriority[uuid] = eventListener as TMEL<TicketSetPriorityEvent>
-        if (Event::class.isAssignableFrom(TicketCloseWithCommentEvent::class))
+        if (eventType.isSupertypeOf(typeOf<TicketCloseWithCommentEvent>()))
             internal.ticketCloseWithComment[uuid] = eventListener as TMEL<TicketCloseWithCommentEvent>
-        if (Event::class.isAssignableFrom(TicketCloseWithoutCommentEvent::class))
+        if (eventType.isSupertypeOf(typeOf<TicketCloseWithoutCommentEvent>()))
             internal.ticketCloseWithoutComment[uuid] = eventListener as TMEL<TicketCloseWithoutCommentEvent>
-        if (Event::class.isAssignableFrom(TicketReadReceiptEvent::class))
+        if (eventType.isSupertypeOf(typeOf<TicketReadReceiptEvent>()))
             internal.ticketReadReceipt[uuid] = eventListener as TMEL<TicketReadReceiptEvent>
 
         return { internal.allEvents.forEach { it.remove(uuid) } }
@@ -107,8 +109,6 @@ private suspend fun <Event : TMEvent> ConcurrentHashMap<UUID, TMEL<Event>>.execu
         }
     }
 }
-
-fun <T: Any, U: Any> KClass<T>.isAssignableFrom(cls: KClass<U>) = this.java.isAssignableFrom(cls.java)
 
 private inline fun safeExecute(f: () -> Unit) {
     try { f() }
