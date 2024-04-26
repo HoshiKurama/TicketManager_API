@@ -10,7 +10,7 @@ import kotlin.reflect.typeOf
 private typealias TMEL<T> = TMEventBus.Internal.EventListener<T>
 
 /**
- * The TMEventBus distributes TicketManager events of supertype [TMEvent] to subscribed listeners registered via the [subscribe] function. These
+ * This event bus distributes TicketManager events of supertype [TMEvent] to subscribed listeners registered via the [subscribe] function. These
  * listeners begin execution asynchronously in an off-thread suspendable coroutine. Registration and deregistration are
  * thread-safe.
  *
@@ -21,7 +21,7 @@ class TMEventBus {
     val internal = Internal()
 
     /**
-     * Registers a [listener] which will execute when [Event] is either: (1) a supertype of or (2) the same type as the
+     * Registers a [listener] that will execute when [Event] is either: (1) a supertype of, or (2) the same type as the
      * fired event. The function is reified to allow for an awesome syntax. See [TMEvent] for more information about the
      * event bus.
      *

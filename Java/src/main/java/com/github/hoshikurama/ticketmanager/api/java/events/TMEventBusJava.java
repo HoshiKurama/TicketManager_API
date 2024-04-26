@@ -3,20 +3,22 @@ package com.github.hoshikurama.ticketmanager.api.java.events;
 import com.github.hoshikurama.ticketmanager.api.events.TMEvent;
 
 import java.util.function.Consumer;
-// TODO UPDATE LANGUAGE USED FOR NEW UPDATE
+
 /**
- * The TMEventBus distributes all TicketManager events to any subscribed listeners in a thread-safe manner. Please note:
- * Java users subscribe to ALL events and then filter/typecast as needed.
+ * This event bus distributes TicketManager events of supertype TMEvent to subscribed listeners registered via the
+ * #subscribe() function. These listeners begin execution asynchronously in an off-thread coroutine, which is not
+ * accessible to Java users. Registration and deregistration are thread-safe.
  * <p>
- * The true Common/Kotlin Event Bus utilizes reified inline functions, something that is impossible to call outside of Kotlin.
- * Consequently, the event bus is significantly dumbed down and exposed in such a way that it is accessible to Java users.
- * <p>
- * Additionally, new subscriptions can be created or destroyed on any thread and at any time.
+ * The true Common/Kotlin Event Bus utilizes a reified inline function, which is impossible to call outside of Kotlin.
+ * Thus, this entry point is required for Java users wishing to register an event listener.
  */
 public interface TMEventBusJava {
     /**
-     * Allows users to subscribe to TicketManager events. This can be called at any time and on any thread.
-     * @return a function to unregister your listener
+     * Registers a listener that will execute when type Event is either: (1) a supertype of, or (2) the same type as the
+     * fired event. See TMEvent above for more information about the event bus.
+     * @param eventClass Event type to listen for. These are contained in the events package of the Common module.
+     * @param listener registered listener.
+     * @return function that unregisters the listener when invoked.
      */
     @SuppressWarnings("unused")
     <Event extends TMEvent> Runnable subscribe(Class<Event> eventClass, Consumer<Event> listener);
