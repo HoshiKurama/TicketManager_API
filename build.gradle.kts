@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.9.20"
+    kotlin("jvm") version "1.9.23"
     `maven-publish`
     java
 }
@@ -12,7 +12,7 @@ dependencies {}
 
 allprojects {
     group = "com.github.hoshikurama"
-    version = "11.0.0"
+    version = "11.1.0"
 }
 
 subprojects {
