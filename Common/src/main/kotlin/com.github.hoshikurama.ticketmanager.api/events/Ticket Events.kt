@@ -37,10 +37,16 @@ sealed interface TicketEvent : TMEvent {
      * @property action performed on the ticket
      * @property id id of the affected ticket
      */
-    sealed interface SingleTicketAction : TicketEvent, WithAction  {
+    sealed interface SingleTicketAction : WithAction  {
         val creator: Creator
         val id: Long
     }
+
+    /**
+     * Represents a single ticket being closed with or without a comment. Mass-closes are **not** included because it is an
+     * aggregate action that affects multiple tickets.
+     */
+    sealed interface Close : SingleTicketAction, CanBeSilent
 }
 
 // Individual events
@@ -90,7 +96,7 @@ data class TicketCloseWithCommentEvent(
     override val creator: Creator,
     override val id: Long,
     override val action: ActionInfo.CloseWithComment,
-) : TicketEvent.SingleTicketAction, TicketEvent.CanBeSilent
+) : TicketEvent.Close
 
 data class TicketCloseWithoutCommentEvent(
     override val commandSender: CommandSender.Active,
@@ -98,7 +104,7 @@ data class TicketCloseWithoutCommentEvent(
     override val creator: Creator,
     override val id: Long,
     override val action: ActionInfo.CloseWithoutComment,
-) : TicketEvent.SingleTicketAction, TicketEvent.CanBeSilent
+) : TicketEvent.Close
 
 data class TicketSetPriorityEvent(
     override val commandSender: CommandSender.Active,
