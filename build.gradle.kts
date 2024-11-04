@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.9.23"
+    kotlin("jvm") version "2.0.21"
     `maven-publish`
     java
 }
@@ -12,7 +12,7 @@ dependencies {}
 
 allprojects {
     group = "com.github.hoshikurama"
-    version = "11.1.0"
+    version = "11.1.1"
 }
 
 subprojects {
@@ -21,13 +21,6 @@ subprojects {
 
     repositories {
         mavenCentral()
-    }
-
-    tasks {
-        compileJava {
-            sourceCompatibility = JavaVersion.VERSION_17.toString()
-            targetCompatibility = JavaVersion.VERSION_17.toString()
-        }
     }
 
     // https://developerlife.com/2021/02/06/publish-kotlin-library-as-gradle-dep/
@@ -44,12 +37,6 @@ subprojects {
     }
 }
 
-tasks {
-    compileKotlin {
-        kotlinOptions.jvmTarget = "17"
-    }
-    compileJava {
-        sourceCompatibility = JavaVersion.VERSION_17.toString()
-        targetCompatibility = JavaVersion.VERSION_17.toString()
-    }
+kotlin {
+    jvmToolchain(21)
 }
