@@ -1,11 +1,11 @@
 plugins {
-    kotlin("jvm") version "2.0.21"
-    id("com.github.ben-manes.versions") version "0.51.0"
+    kotlin("jvm") version "2.2.0"
+    id("com.github.ben-manes.versions") version "0.52.0"
 }
 
 dependencies {
     implementation(project(":Common"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
 }
 
 kotlin {
