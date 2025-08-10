@@ -4,11 +4,13 @@ import com.github.hoshikurama.ticketmanager.api.impl.registry.*
 import com.github.hoshikurama.ticketmanager.api.registry.config.ConfigRegistry
 import com.github.hoshikurama.ticketmanager.api.registry.database.DatabaseRegistry
 import com.github.hoshikurama.ticketmanager.api.registry.locale.LocaleRegistry
+import com.github.hoshikurama.ticketmanager.api.registry.messagesharing.MessageSharingRegistry
 import com.github.hoshikurama.ticketmanager.api.registry.permission.PermissionRegistry
 import com.github.hoshikurama.ticketmanager.api.registry.playerjoin.PlayerJoinRegistry
 import com.github.hoshikurama.ticketmanager.api.registry.precommand.PreCommandRegistry
 import com.github.hoshikurama.ticketmanager.api.registry.repeatingtasks.RepeatingTaskRegistry
 
+@Suppress("Unused")
 object TicketManager {
     val ConfigRegistry: ConfigRegistry = TMConfigRegistry()
     val DatabaseRegistry: DatabaseRegistry = TMDatabaseRegistry()
@@ -17,5 +19,6 @@ object TicketManager {
     val PlayerJoinRegistry: PlayerJoinRegistry = TMPlayerJoinRegistry()
     val PreCommandRegistry: PreCommandRegistry = TMPreCommandRegistry()
     val RepeatingTaskRegistry: RepeatingTaskRegistry = TMRepeatingTaskRegistry()
+    val MessageSharingRegistry: MessageSharingRegistry = TMMessageSharingRegistry()
     val EventBus = TMEventBus()
 }
