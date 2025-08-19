@@ -13,6 +13,7 @@ interface PlatformFunctions {
     fun offlinePlayerNameToUUIDOrNull(name: String): UUID?
     fun nameFromUUIDOrNull(uuid: UUID): String?
     fun teleportToTicketLocSameServer(player: CommandSender.OnlinePlayer, loc: ActionLocation.FromPlayer)
+    @Deprecated("MessageSharingExtension has effectively taken over this role.")
     fun teleportToTicketLocDiffServer(player: CommandSender.OnlinePlayer, loc: ActionLocation.FromPlayer)
 
     // Console Messages
