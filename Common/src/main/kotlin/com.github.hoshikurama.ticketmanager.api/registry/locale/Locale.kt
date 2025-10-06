@@ -154,6 +154,7 @@ interface Locale {
     val brigadierInvalidAssignment: String
     val brigadierInvalidTimeUnit: String
     val brigadierInvalidPriority: String
+    val brigadierInvalidPlayerName: String
 
     // View and Deep View
     val viewHeader: String

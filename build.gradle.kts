@@ -12,7 +12,7 @@ dependencies {}
 
 allprojects {
     group = "com.github.hoshikurama"
-    version = "11.2.0"
+    version = "12.0.0"
 }
 
 subprojects {
